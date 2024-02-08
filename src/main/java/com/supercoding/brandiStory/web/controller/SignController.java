@@ -3,8 +3,6 @@ package com.supercoding.brandiStory.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping( value = "/v1/api/sign")
