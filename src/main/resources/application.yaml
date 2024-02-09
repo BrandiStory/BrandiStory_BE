@@ -5,6 +5,12 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/project_2?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 8282
+
 #datasource:
 #  username: ${DATABASE_USERNAME}
 #  password: ${DATABASE_PASSWORD}
@@ -19,3 +25,4 @@ spring:
 #
 #jwt:
 #  secret-key-source: ${JWT_SECRET_KEY}
+
