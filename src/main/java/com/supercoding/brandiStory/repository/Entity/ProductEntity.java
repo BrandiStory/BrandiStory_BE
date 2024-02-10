@@ -28,6 +28,6 @@ public class ProductEntity {
     @Schema(description = "Time", example = "작성시간")
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "productEntity")
-    private List<ImageEntity> images= new ArrayList<>();
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.EAGER)
+    private List<ImageEntity> images; /*= new ArrayList<>();*/
 }
