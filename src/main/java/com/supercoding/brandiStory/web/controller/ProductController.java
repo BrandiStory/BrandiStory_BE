@@ -5,6 +5,7 @@ import com.supercoding.brandiStory.repository.Entity.ProductEntity;
 import com.supercoding.brandiStory.repository.products.ProductJpaRepository;
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.service.ProductService;
+import com.supercoding.brandiStory.service.exceptions.InvalidValueException;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import com.supercoding.brandiStory.web.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +47,14 @@ public class ProductController implements ApiController {
     public String addToCart(@RequestBody CartItemDTO cartItemDTO){
         cartService.addToCart(cartItemDTO);
         return "장바구니에 상품이 추가되었습니다.";
+    }
+
+    //요청문은 /cart/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
+    @Operation(summary = "장바구니 수량 수정")
+    @PutMapping("/cart/update/{productId}")
+    public ResponseEntity<String> updateCart(@PathVariable("id") Integer productId, @RequestBody Integer newQuantity) {
+         cartService.updateCart(productId, newQuantity);
+         return ResponseEntity.ok("장바구니 수량이 수정되었습니다.");
     }
 
 }
