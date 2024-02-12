@@ -39,7 +39,7 @@ public class AuthService {
         String email = signUpRequest.getEmail();
         String password = signUpRequest.getPassword();
         String address = signUpRequest.getAddress();
-        String phoneNumber = signUpRequest.getPhoneNumber();
+        String phoneNumber = signUpRequest.getPhone();
         String gender = signUpRequest.getGender();
         String username = signUpRequest.getUsername();
 //        MultipartFile profile = signUpRequest.getProfile();
@@ -78,13 +78,11 @@ public class AuthService {
                                         .map(Enum::name)
                                         .collect(Collectors.toList());
 
-            log.info("login roles : {}", roles);
+//            log.info("login roles : {}", roles);
 
             return jwtTokenProvider.createToken(email, roles);
         } catch (Exception e) {
             throw new NotAcceptException("로그인 할 수 없습니다.");
         }
-
-
     }
 }

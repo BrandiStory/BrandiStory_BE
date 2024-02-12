@@ -13,7 +13,7 @@ public class SignUp {
     private String email;
     private String username;
     private String password;
-    private String phoneNumber;
+    private String phone;
     private String address;
     private String gender;
 //    private MultipartFile profile;
