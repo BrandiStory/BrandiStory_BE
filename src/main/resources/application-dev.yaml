@@ -11,3 +11,12 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+datasource:
+  username: ${DATABASE_USERNAME}
+  password: ${DATABASE_PASSWORD}
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://localhost:3306/supercoding-proj2-test?useUnicode=true&characterEncoding=UTF-8
+
+jwt:
+  secret-key-source: ${JWT_SECRET_KEY}

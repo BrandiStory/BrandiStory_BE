@@ -6,7 +6,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,20 +22,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-//    @Value("${jwt.secret-key-source}")
+    @Value("${jwt.secret-key-source}")
     private String secretKeySource;
-//    private String secretKey;
+    private String secretKey;
 
-    private final String secretKey = Base64.getEncoder().encodeToString("super-coding".getBytes());
     private long tokenValidMillisecond = 1000L * 60 * 60; // 1시간
 
     private final UserDetailsService userDetailsService;
 
-//    @PostConstruct
-//    public void setUp(){
-//        secretKey = Base64.getEncoder()
-//                .encodeToString(secretKeySource.getBytes());
-//    }
+    @PostConstruct
+    public void setUp(){
+        secretKey = Base64.getEncoder()
+                .encodeToString(secretKeySource.getBytes());
+    }
 
     public String resolveToken(HttpServletRequest request) {
         return request.getHeader("X-AUTH-TOKEN");

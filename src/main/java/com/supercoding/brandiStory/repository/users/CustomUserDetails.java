@@ -22,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
     private List<String> authorities;
 
     public Integer getUserId() {
-        return userId;
+        return this.userId;
     }
 
     @Override

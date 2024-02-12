@@ -1,7 +1,9 @@
 package com.supercoding.brandiStory.web.controller;
 
 import com.supercoding.brandiStory.service.AuthService;
+import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,16 +19,12 @@ public class SignController {
         boolean isSuccess = authService.signUp(signUpRequest);
         return isSuccess ? "회원가입 성공하였습니다." : "회원가입 실패하였습니다.";
     }
-//
-//    @PostMapping(value = "/login")
-//    public String login(@RequestBody Login loginRequest, HttpServletResponse httpServletResponse){
-//        String token = authService.login(loginRequest);
-//        httpServletResponse.setHeader("X-AUTH-TOKEN", token);
-//        return "로그인이 성공하였습니다.";
-//    }
 
-    @GetMapping("/test")
-    public String test() {
-        return "test";
+    @PostMapping(value = "/login")
+    public String login(@RequestBody Login loginRequest, HttpServletResponse httpServletResponse){
+        String token = authService.login(loginRequest);
+        httpServletResponse.setHeader("X-AUTH-TOKEN", token);
+        return "로그인이 성공하였습니다.";
     }
+
 }

@@ -27,7 +27,7 @@ public class UserEntity {
     @Column(length = 30, columnDefinition = "TEXT")
     private String address;
     @Enumerated(EnumType.STRING)
-    private SexType sex;
+    private SexType gender;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
