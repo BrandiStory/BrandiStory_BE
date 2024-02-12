@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -24,7 +25,8 @@ public class ProductService {
         if (productEntities.isEmpty()) throw new NotFoundException("등록된 상품이 없습니다.");
         //     return productEntities.stream().map(ProductMapper.INSTANCE::productEntityToProductDTO).collect(Collectors.toList());
         //품절이면 제외하는 코드
-        return productEntities.stream().filter(productEntity -> productEntity.getQuantity() > 0).map(ProductMapper.INSTANCE::productEntityToProductDTO).collect(Collectors.toList());
+        return productEntities.stream().filter(productEntity -> productEntity.getQuantity() > 0)
+                .map(ProductMapper.INSTANCE::productEntityToProductDTO).collect(Collectors.toList());
     }
 
 //쇼핑몰 전체 물품 조회 시 Pagination 사용 권장. 재고 없는 물품은 보이지 않아야함.
@@ -34,7 +36,17 @@ public class ProductService {
 
     public Page<ProductDTO> getAllWithPageable(Pageable pageable) {
         Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
-        return productEntities.map(ProductMapper.INSTANCE::productEntityToProductDTO);
+       // ProductEntity productEntity;
+        //exception넣기 if문으로 .. !
+        return productEntities.stream()
+                .filter(productEntity -> productEntity.getQuantity() > 0)
+                .map(productEntity -> ProductMapper.INSTANCE.productEntityToProductDTO(productEntity))
+               .filter(productEntities::nonNull)
+                .collect(Collectors.toList());
+
+
+
+       // return productEntities.map(ProductMapper.INSTANCE::productEntityToProductDTO);
         //품절인지 확인하는 코드 추가 //수정해야함.
 //        return productEntities
 //                .map(productEntity -> {

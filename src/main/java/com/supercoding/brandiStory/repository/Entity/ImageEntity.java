@@ -14,7 +14,7 @@ public class ImageEntity {
     private Integer imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "products_id")
     private ProductEntity productEntity;
     //    @Column(name = "product_id")
 //    private Integer productId;
