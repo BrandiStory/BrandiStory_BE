@@ -1,5 +1,9 @@
 package com.supercoding.brandiStory.config;
 
+import com.supercoding.brandiStory.config.security.CustomAuthenticationEntryPoint;
+import com.supercoding.brandiStory.config.security.CustomerAccessDeniedHandler;
+import com.supercoding.brandiStory.config.security.JwtTokenProvider;
+import com.supercoding.brandiStory.web.filters.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -22,6 +27,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfig {
+    private final JwtTokenProvider jwtTokenProvider;
+
     // Swagger security 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,13 +37,18 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authz) -> authz
-                    .requestMatchers(
-                        // Swagger 허용 URL
-                        "/v1/api/**", "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
-                        "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
-                        "/webjars/**", "/swagger-ui.html", "/api/login", "/api/signup", "/api/posts/**")
-                    .permitAll().anyRequest().authenticated()
-                );
+                        .requestMatchers(
+                                // Swagger 허용 URL
+                                "/v1/api/**", "/v2/api-docs", "/v3/api-docs", "/v3/api-docs/**", "/swagger-resources",
+                                "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
+                                "/webjars/**", "/swagger-ui.html", "/api/login", "/api/signup", "/api/posts/**",
+                                "/resources/static/**")
+                        .permitAll().anyRequest().authenticated()
+                )
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomerAccessDeniedHandler()))
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

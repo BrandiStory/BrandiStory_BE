@@ -5,10 +5,12 @@ import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping( value = "/v1/api/sign")
 public class SignController {
 
@@ -23,6 +25,7 @@ public class SignController {
     @PostMapping(value = "/login")
     public String login(@RequestBody Login loginRequest, HttpServletResponse httpServletResponse){
         String token = authService.login(loginRequest);
+        log.info("token: {}", token);
         httpServletResponse.setHeader("X-AUTH-TOKEN", token);
         return "로그인이 성공하였습니다.";
     }
