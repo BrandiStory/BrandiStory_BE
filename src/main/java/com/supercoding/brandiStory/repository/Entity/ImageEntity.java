@@ -7,17 +7,16 @@ import java.util.Optional;
 
 @Getter
 @Entity
-@Table(name="productImages")
+@Table(name="product_images")
 public class ImageEntity {
-    @Id
+    @Id @Column(name = "image_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer imageId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "products_id")
+    @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
-    //    @Column(name = "product_id")
-//    private Integer productId;
+
     @Column(name = "image")
     private Integer image;
     @Column(name = "sequence")

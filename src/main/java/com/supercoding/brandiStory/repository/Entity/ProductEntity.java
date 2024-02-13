@@ -15,7 +15,7 @@ import java.util.List;
 public class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "id")
+    @Column(name= "product_id")
     private Integer productId;
     @Column(name = "product_name", length =255)
     private String productName;
@@ -25,9 +25,7 @@ public class ProductEntity {
     private Integer quantity;
     @Column(name = "company_name", length =255)
     private String companyName;
-    @Schema(description = "Time", example = "작성시간")
-    private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.EAGER)
-    private List<ImageEntity> images; /*= new ArrayList<>();*/
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    private List<ImageEntity> imageList; /*= new ArrayList<>();*/
 }
