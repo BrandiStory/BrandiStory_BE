@@ -1,7 +1,7 @@
 package com.supercoding.brandiStory.web.controller;
 
 //import com.supercoding.brandiStory.repository.Entity.ImageEntity;
-import com.supercoding.brandiStory.repository.Entity.ProductEntity;
+import com.supercoding.brandiStory.repository.entity.ProductEntity;
 import com.supercoding.brandiStory.repository.products.ProductJpaRepository;
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.service.ProductService;
@@ -25,7 +25,7 @@ import java.util.List;
 public class ProductController implements ApiController {
 
     private final ProductService productService;
-    private final CartService cartService;
+
 
     @Operation(summary = "상품 전체 조회 *품절제외")
     @GetMapping("/products")
@@ -36,25 +36,10 @@ public class ProductController implements ApiController {
 
     @Operation(summary = "pagination 지원하는 전체 상품 조회페이지")
     @GetMapping("/products-page")
-    public Page<ProductDTO> getAllProductsPagination(Pageable pageable){
-        return productService.getAllWithPageable(pageable);
+    public Page<ProductDTO> findAllProductsPagination(Pageable pageable){
+        return productService.findAllWithPageable(pageable);
     }
 
 
-    //json형식으로 post보내면 되겠지. {productId랑 quantity, }
-    @Operation(summary = "장바구니에 상품 추가")
-    @PostMapping("/add-to-cart")
-    public String addToCart(@RequestBody CartItemDTO cartItemDTO){
-        cartService.addToCart(cartItemDTO);
-        return "장바구니에 상품이 추가되었습니다.";
-    }
-
-    //요청문은 /cart/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
-    @Operation(summary = "장바구니 수량 수정")
-    @PutMapping("/cart/update/{productId}")
-    public ResponseEntity<String> updateCart(@PathVariable("id") Integer productId, @RequestBody Integer newQuantity) {
-         cartService.updateCart(productId, newQuantity);
-         return ResponseEntity.ok("장바구니 수량이 수정되었습니다.");
-    }
 
 }

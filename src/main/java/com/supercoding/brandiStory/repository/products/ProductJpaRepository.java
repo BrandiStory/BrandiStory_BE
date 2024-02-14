@@ -1,7 +1,6 @@
 package com.supercoding.brandiStory.repository.products;
 
-import com.supercoding.brandiStory.repository.Entity.ProductEntity;
-import jakarta.persistence.EntityManager;
+import com.supercoding.brandiStory.repository.entity.ProductEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Integer> {
-    @Query("SELECT p FROM ProductEntity p LEFT JOIN FETCH p.imageList WHERE p.productId = :productId")
-    Optional<ProductEntity> findByIdWithImages(@Param("productId") Long productId);
+//    @Query("SELECT p FROM ProductEntity p LEFT JOIN FETCH p.imageList WHERE p.productId = :productId")
+//    Optional<ProductEntity> findByIdWithImages(@Param("productId") Long productId);
 }
 

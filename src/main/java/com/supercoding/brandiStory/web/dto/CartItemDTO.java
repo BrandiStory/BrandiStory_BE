@@ -15,9 +15,9 @@ import java.time.LocalDateTime;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CartItemDTO {
     @Schema(description = "장바구니ID", example = "5")
-    private Integer cartItemId;
+    private Integer cartItemsId;
     @Schema(description = "유저ID", example = "1")
-    private Integer userId;
+    private Integer usersId;
     @Schema(description = "제품ID", example = "3")
     private Integer productId;
     @Schema(description = "가격", example = "30000")

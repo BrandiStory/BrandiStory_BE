@@ -1,15 +1,16 @@
-package com.supercoding.brandiStory.repository.Entity;
+package com.supercoding.brandiStory.repository.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name="products")
 public class ProductEntity {
@@ -25,7 +26,6 @@ public class ProductEntity {
     private Integer quantity;
     @Column(name = "company_name", length =255)
     private String companyName;
-
-    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
-    private List<ImageEntity> imageList; /*= new ArrayList<>();*/
+//    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+//    private List<ImageEntity> imageList; /*= new ArrayList<>();*/
 }

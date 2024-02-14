@@ -4,6 +4,7 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/brandi_story?useUnicode=true&characterEncoding=UTF-8
