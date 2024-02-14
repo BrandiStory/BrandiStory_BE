@@ -49,4 +49,10 @@ public class ProductService {
 //                })
 //                .filter(productDTO -> productDTO != null);
     }
+
+    public ProductDTO getProduct(int productId) {
+        ProductEntity productEntity = productJpaRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
+        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity);
+    }
 }
