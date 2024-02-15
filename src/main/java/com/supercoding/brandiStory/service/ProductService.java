@@ -8,6 +8,7 @@ import com.supercoding.brandiStory.web.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -35,18 +36,17 @@ public class ProductService {
 //한페이지에 4개 들어갈지 8개 들어갈지 정하면 됨. 그리고 첫번째 페이지는0페이지?로 강의에서 배움
 
     public Page<ProductDTO> findAllWithPageable(Pageable pageable) {
+//        Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
+//         return productEntities.map(ProductMapper.INSTANCE::productEntityToProductDTO);
+//수량이 0인 제품은 제외하고 출력
         Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
-         return productEntities.map(ProductMapper.INSTANCE::productEntityToProductDTO);
-        //  품절인지 확인하는 코드 추가
-//        Page<ProductEntity> productEntitiesPage = productJpaRepository.findAll(pageable);
-//        return (Page<ProductDTO>) productEntitiesPage
-//                .map(productEntity -> {
-//                    if (productEntity.getQuantity() > 0) {
-//                        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity);
-//                    } else {
-//                        return null;
-//                    }
-//                })
-//                .filter(productDTO -> productDTO != null);
+        List<ProductEntity> filteredEntities = productEntities.getContent()
+                .stream()
+                .filter(entity -> entity.getQuantity() > 0)
+                .collect(Collectors.toList());
+        Page<ProductDTO> filteredPage = new PageImpl<>(filteredEntities)
+                .map(ProductMapper.INSTANCE::productEntityToProductDTO);
+        return filteredPage;
     }
 }
+

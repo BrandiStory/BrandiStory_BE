@@ -55,8 +55,8 @@ public class CartService {
     }
 
 
-    public CartItemDTO updateCartItemDTO(String id, CartItemDTO cartItemDTO) {
-        Integer cartIdInt = Integer.valueOf(id);
+    public CartItemDTO updateCartItemDTO(String cartId, CartItemDTO cartItemDTO) {
+        Integer cartIdInt = Integer.valueOf(cartId);
         CartItemEntity cartItemEntity = cartItemJpaRepository.findById(cartIdInt)
                 .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다"));
 

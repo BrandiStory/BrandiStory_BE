@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/api/") //ApiController상속해줘서 생략
+//@RequestMapping("/api/") //ApiController구현해줘서 생략
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController implements ApiController {
@@ -39,7 +39,5 @@ public class ProductController implements ApiController {
     public Page<ProductDTO> findAllProductsPagination(Pageable pageable){
         return productService.findAllWithPageable(pageable);
     }
-
-
 
 }
