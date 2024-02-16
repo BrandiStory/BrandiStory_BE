@@ -8,11 +8,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface CartMapper {
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-   // @Mapping(target="cartItemId", ignore=true) //cartItemId 자동추가할지, 내가 설정해줄지 어떻게할지 생각해보기.
+    @Mapping(target = "cartItemsId", ignore = true)
     CartItemEntity cartItemDTOToCartItemEntity(CartItemDTO cartItemDTO);
+
+    @Mapping(target = "cartItemsId", ignore = true)
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
+
 }
