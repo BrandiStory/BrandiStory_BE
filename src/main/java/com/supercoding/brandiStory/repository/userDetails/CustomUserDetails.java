@@ -1,4 +1,4 @@
-package com.supercoding.brandiStory.repository.users;
+package com.supercoding.brandiStory.repository.userDetails;
 
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
     private Integer userId;
     private String email;
     private String password;
-    private List<String> authorities;
+    private List<String> authorities;   // 권한 목록들
 
     public Integer getUserId() {
         return this.userId;
@@ -37,6 +37,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
+        // username으로 email 사용
         return this.email;
     }
 
