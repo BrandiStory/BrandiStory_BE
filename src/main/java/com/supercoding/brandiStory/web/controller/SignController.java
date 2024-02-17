@@ -4,6 +4,7 @@ import com.supercoding.brandiStory.service.AuthService;
 import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class SignController {
     private final AuthService authService;
 
     @PostMapping(value = "/register")
-    public String register(@RequestBody SignUp signUpRequest){
+    public String register(@RequestBody @Valid SignUp signUpRequest){
         boolean isSuccess = authService.signUp(signUpRequest);
         return isSuccess ? "회원가입 성공하였습니다." : "회원가입 실패하였습니다.";
     }

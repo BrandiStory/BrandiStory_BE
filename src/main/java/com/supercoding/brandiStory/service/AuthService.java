@@ -34,7 +34,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public boolean signUp(SignUp signUpRequest) {
+    public boolean signUp( SignUp signUpRequest) {
         log.info("signUpRequest : {}", signUpRequest);
         String email = signUpRequest.getEmail();
         String password = signUpRequest.getPassword();
@@ -80,7 +80,7 @@ public class AuthService {
 
 //            log.info("login roles : {}", roles);
 
-            return jwtTokenProvider.createToken(email, roles);
+            return jwtTokenProvider.createAccessToken(email, roles);
         } catch (Exception e) {
             throw new NotAcceptException("로그인 할 수 없습니다.");
         }
