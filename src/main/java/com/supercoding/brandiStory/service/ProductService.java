@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
     private final ProductJpaRepository productJpaRepository;
+
 
     public List<ProductDTO> getAllProducts() {
         List<ProductEntity> productEntities = productJpaRepository.findAll();
@@ -29,6 +31,36 @@ public class ProductService {
         return productEntities.stream().filter(productEntity -> productEntity.getQuantity() > 0)
                 .map(ProductMapper.INSTANCE::productEntityToProductDTO).collect(Collectors.toList());
     }
+
+
+    public List<ProductDTO> getAllProductsWithImages() {
+        List<ProductEntity> productEntitiesWithImages=productJpaRepository.findAllWithImages();
+        if(productEntitiesWithImages.isEmpty()) throw new NotFoundException("등록된 이미지가 없습니다.");
+        return productEntitiesWithImages.stream().filter(productEntity -> productEntity.getQuantity() > 0)
+                .map(ProductMapper.INSTANCE::productEntityToProductDTO).collect(Collectors.toList());
+    }
+
+//    public Optional<ProductEntity> getProductWithImages(String id) {
+//        Integer productIdInt = Integer.valueOf(id);
+//        return productJpaRepository.findByIdWithImages(productIdInt);
+//    }
+
+//    public List<ProductDTO> getAllProducts() {
+//        List<ProductEntity> productEntities = productJpaRepository.findAllWithImages();
+//        if (productEntities.isEmpty()) throw new NotFoundException("등록된 상품이 없습니다.");
+//
+//        return productEntities.stream()
+//                .filter(productEntity -> productEntity.getQuantity() > 0)
+//                .map(productEntity -> {
+//                    ProductDTO productDTO = ProductMapper.INSTANCE.productEntityToProductDTO(productEntity);
+//                    // 이미지 파일 경로 추가
+//                    productDTO.setImageDTOList(productEntity.getImageList());
+//                    return productDTO;
+//                })
+//                .collect(Collectors.toList());
+//    }
+
+
 
 //이거 써서 코드 다시 만들어보기!    findByIdWithImages(@Param("productId") Long productId):
 

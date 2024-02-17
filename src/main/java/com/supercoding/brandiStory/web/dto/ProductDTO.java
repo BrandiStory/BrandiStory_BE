@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,4 +24,5 @@ public class ProductDTO {
         private Integer quantity;
         @Schema(description = "회사이름", example = "블링")
         private String companyName;
+        private List<ImageDTO> imageDTOList;
     }

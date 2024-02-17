@@ -31,8 +31,8 @@ public class ProductEntity {
 //    @JoinColumn(name="product_id")
 //    private CartItemEntity cartItemEntity;
 
-//    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
-//    private List<ImageEntity> imageList; /*= new ArrayList<>();*/
+    @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
+    private List<ImageEntity> imageList;
 
 
 }

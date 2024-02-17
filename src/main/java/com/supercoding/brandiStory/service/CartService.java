@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartItemJpaRepository cartItemJpaRepository;
     private final ProductJpaRepository productJpaRepository;
-    private List<CartItemDTO> cartItemList;
+//    private List<CartItemDTO> cartItemList;
 
     //    public CartService() {
 //        this.cartItemList = new ArrayList<>();

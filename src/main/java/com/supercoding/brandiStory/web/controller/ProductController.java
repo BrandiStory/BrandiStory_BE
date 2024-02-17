@@ -40,4 +40,10 @@ public class ProductController implements ApiController {
         return productService.findAllWithPageable(pageable);
     }
 
+    @Operation(summary = "이미지와 함께 조회")
+    @GetMapping("/products-with-images")
+    public List<ProductDTO> getProductWithImages() {
+        List<ProductDTO> productDTO = productService.getAllProductsWithImages();
+        return productDTO;
+    }
 }
