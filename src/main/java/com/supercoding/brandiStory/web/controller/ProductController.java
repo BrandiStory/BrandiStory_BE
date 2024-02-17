@@ -27,23 +27,29 @@ public class ProductController implements ApiController {
     private final ProductService productService;
 
 
-    @Operation(summary = "상품 전체 조회 *품절제외")
+    @Operation(summary = "전체 상품 페이지 - 이미지 불포함")
     @GetMapping("/products")
     public List<ProductDTO> getAllProducts() {
         List<ProductDTO> productDTO = productService.getAllProducts();
         return productDTO;
     }
 
-    @Operation(summary = "pagination 지원하는 전체 상품 조회페이지")
-    @GetMapping("/products-page")
-    public Page<ProductDTO> findAllProductsPagination(Pageable pageable){
-        return productService.findAllWithPageable(pageable);
-    }
-
-    @Operation(summary = "이미지와 함께 조회")
+    @Operation(summary = "전체 상품 페이지 - 이미지 포함")
     @GetMapping("/products-with-images")
     public List<ProductDTO> getProductWithImages() {
         List<ProductDTO> productDTO = productService.getAllProductsWithImages();
         return productDTO;
+    }
+
+//    @Operation(summary = "Page형식 조회페이지 - 이미지 불포함")
+//    @GetMapping("/products-page")
+//    public Page<ProductDTO> findAllProductsPagination(Pageable pageable){
+//        return productService.findAllWithPageable(pageable);
+//    }
+
+    @Operation(summary = "Page형식 조회페이지 - 이미지 포함")
+    @GetMapping("/products-page")
+    public Page<ProductDTO> findAllProductsPaginationWithImages(Pageable pageable){
+        return productService.findAllWithPageableWithImages(pageable);
     }
 }
