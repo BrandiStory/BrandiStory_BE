@@ -43,8 +43,8 @@ public class ProductController implements ApiController {
 
     @Operation(summary = "상품 상세 조회")
     @GetMapping("/products/{productId}")
-    public ProductDTO getProduct(@PathVariable int productId) {
-        return productService.getProduct(productId);
+    public ProductDTO getProductDetail(@PathVariable int productId) {
+        return productService.getProductDetail(productId);
     }
 
 
