@@ -14,10 +14,10 @@ import java.util.List;
 public interface CartMapper {
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-    @Mapping(target = "cartItemsId", ignore = true)
+   // @Mapping(target = "cartItemsId", ignore = true)
     CartItemEntity cartItemDTOToCartItemEntity(CartItemDTO cartItemDTO);
 
-    @Mapping(target = "cartItemsId", ignore = true)
+    //@Mapping(target = "cartItemsId", ignore = true)
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
 
 }

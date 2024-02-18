@@ -2,10 +2,13 @@ package com.supercoding.brandiStory.web.controller;
 
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.service.CartService;
+import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
+import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +23,15 @@ public class CartController implements ApiController {
 
    //이거 프로덕트 컨트롤러에 넣을지, 장바구니 컨트롤러에 넣을지 정하기
     //json형식으로 post보내면 되겠지. {productId랑 quantity, }
-    @Operation(summary = "장바구니에 상품 추가")
-    @PostMapping("/products/add-to-cart")
-    public ResponseEntity<String> addToCart(@RequestBody CartItemDTO cartItemDTO){
-        cartService.addToCart(cartItemDTO);
-        return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
-    }
+//    @Operation(summary = "장바구니에 상품 추가")
+//    @PostMapping("/products/add-to-cart")
+//    public ResponseEntity<String> addToCart(@RequestBody CartItemDTO cartItemDTO){
+//        cartService.addToCart(cartItemDTO);
+//        return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
+//    }
+
+
+
 
     //로그인 후에는 그 유저의 장바구니만 조회되니까 유저별 장바구니 조회는 필요없겠지?
     //장바구니 id별로 불러오기 구현???? 장바구니에 한 아이템 말고 두가지 이상 담기도 추가?
