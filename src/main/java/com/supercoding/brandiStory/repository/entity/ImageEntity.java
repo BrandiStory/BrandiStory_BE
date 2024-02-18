@@ -34,9 +34,4 @@ public class ImageEntity {
 //        return Optional.ofNullable(productEntity);
 //    }
 
-    @Column(name = "image")
-    private Integer image;
-    @Column(name = "sequence")
-    private Integer sequence;
-
 }

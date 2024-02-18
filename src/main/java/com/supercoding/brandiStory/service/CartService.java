@@ -28,10 +28,10 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartItemJpaRepository cartItemJpaRepository;
     private final ProductJpaRepository productJpaRepository;
-//    private List<CartItemDTO> cartItemList;
+    private List<CartItemDTO> cartItemList;
 
-    //    public CartService() {
-//        this.cartItemList = new ArrayList<>();
+//    public CartService() {
+//    this.cartItemList = new ArrayList<>();
 //    }
     public Integer addToCart(CartItemDTO cartItemDTO) {
         CartItemEntity cartItemEntity = CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
@@ -43,8 +43,6 @@ public class CartService {
         }
         return cartItemEntityCreated.getCartItemsId();
     }
-
-
     public List<CartItemDTO> getCartItems() {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
         if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");

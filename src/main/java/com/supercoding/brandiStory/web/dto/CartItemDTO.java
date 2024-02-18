@@ -24,7 +24,7 @@ public class CartItemDTO {
     private Integer price;
     @Schema(description = "수량", example = "4")
     private Integer quantity;
-    @Schema(description = "총합계", example = "30000(개별가격)*4(수량)=120000(총합계)")
+    @Schema(description = "총합계", example = "가격*수량=총합계")
     private Integer totalPrice;
 
 
