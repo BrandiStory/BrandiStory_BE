@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -63,6 +64,7 @@ public class AuthService {
         return true;
     }
 
+    @Transactional
     public String login(Login loginRequest) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
@@ -88,6 +90,7 @@ public class AuthService {
         }
     }
 
+    @Transactional
     public void logout(HttpServletRequest httpServletRequest) throws JwtTokenException{
         try {
             String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
@@ -98,6 +101,15 @@ public class AuthService {
             String eMessage = e.getMessage();
             log.error("logout error: {}", eMessage);
             throw new JwtTokenException(eMessage);
+        }
+    }
+
+    @Transactional
+    public void deleteUser(String email) {
+        Optional<UserEntity> userOptional = userJpaRepository.findByEmail(email);
+        if(userOptional.isPresent()){
+            UserEntity userEntity = userOptional.get();
+            userJpaRepository.delete(userEntity);
         }
     }
 }
