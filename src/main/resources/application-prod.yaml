@@ -9,7 +9,7 @@ datasource:
   username: ${DATABASE_USERNAME}
   password: ${DATABASE_PASSWORD}
   driver-class-name: org.mariadb.jdbc.Driver
-  url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/items?useUnicode=true&characterEncoding=UTF-8
+  url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/brandi_story?useUnicode=true&characterEncoding=UTF-8
 
 jwt:
   secret-key-source: ${JWT_SECRET_KEY}
