@@ -4,6 +4,7 @@ import com.supercoding.brandiStory.repository.users.enums.SexType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-    @Id @Column @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "users_id")
     private Integer id;
     @Column(nullable = false, unique = true)
     private String email;
@@ -29,6 +31,8 @@ public class UserEntity {
     private String address;
     @Enumerated(EnumType.STRING)
     private SexType gender;
+
+    @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 }
