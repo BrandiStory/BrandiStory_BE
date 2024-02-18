@@ -12,7 +12,7 @@ import org.mapstruct.factory.Mappers;
 public interface ProductMapper {
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    @Mapping(source = "imageList", target = "imageDTOList")
+    @Mapping(source = "imageList", target = "imageList")
     ProductDTO productEntityToProductDTO(ProductEntity productEntity);
 
     @Mapping(source = "imageEntity.productEntity.productId", target = "productId")
