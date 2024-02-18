@@ -8,6 +8,7 @@ import com.supercoding.brandiStory.service.exceptions.InvalidValueException;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.service.mapper.CartMapper;
+import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +34,8 @@ public class CartService {
 //    public CartService() {
 //    this.cartItemList = new ArrayList<>();
 //    }
-    public Integer addToCart(CartItemDTO cartItemDTO) {
-        CartItemEntity cartItemEntity = CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
+    public Integer addToCart(CartItemBody cartItemBody) {
+        CartItemEntity cartItemEntity = CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(null, cartItemBody);
         CartItemEntity cartItemEntityCreated;
         try {
             cartItemEntityCreated = cartItemJpaRepository.save(cartItemEntity);
@@ -43,6 +44,7 @@ public class CartService {
         }
         return cartItemEntityCreated.getCartItemsId();
     }
+
     public List<CartItemDTO> getCartItems() {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
         if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");

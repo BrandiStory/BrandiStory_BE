@@ -17,9 +17,8 @@ import java.util.Set;
 @Entity
 @Table(name="cart_items")
 public class CartItemEntity {
-    @Id
+    @Id @Column(name= "cart_items_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name= "cart_items_id")
     private Integer cartItemsId;
 
 //    //OneToOne? or ManyToOne?

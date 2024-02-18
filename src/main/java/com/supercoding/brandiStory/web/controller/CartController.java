@@ -2,6 +2,7 @@ package com.supercoding.brandiStory.web.controller;
 
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.service.CartService;
+import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class CartController implements ApiController {
     //json형식으로 post보내면 되겠지. {productId랑 quantity, }
     @Operation(summary = "장바구니에 상품 추가")
     @PostMapping("/products/add-to-cart")
-    public ResponseEntity<String> addToCart(@RequestBody CartItemDTO cartItemDTO){
-        cartService.addToCart(cartItemDTO);
+    public ResponseEntity<String> addToCart(@RequestBody CartItemBody cartItemBody){
+        cartService.addToCart(cartItemBody);
         return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
     }
 
