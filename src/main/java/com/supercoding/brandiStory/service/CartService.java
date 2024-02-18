@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartItemJpaRepository cartItemJpaRepository;
     private final ProductJpaRepository productJpaRepository;
-    private List<CartItemDTO> cartItemList;
+//    private List<CartItemDTO> cartItemList;
 
     //    public CartService() {
 //        this.cartItemList = new ArrayList<>();
@@ -35,7 +36,6 @@ public class CartService {
     public Integer addToCart(CartItemDTO cartItemDTO) {
         CartItemEntity cartItemEntity = CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
         CartItemEntity cartItemEntityCreated;
-
         try {
             cartItemEntityCreated = cartItemJpaRepository.save(cartItemEntity);
         } catch (RuntimeException exception) {
@@ -46,7 +46,7 @@ public class CartService {
 
 
     public List<CartItemDTO> getCartItems() {
-        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll(); //user이름으로 조회할 수 있는 코드 만들기?
+        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
         if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
 
         return cartItemEntities.stream()
@@ -54,20 +54,20 @@ public class CartService {
                 .collect(Collectors.toList());
     }
 
-
+ //카트id하나당 제품id 하나씩 들어가있는데 리스트가 들어가게끔 해보기
+    //productId를 가져오면 productPrice를 같이 가져오도록 코드짜보기 2/15
     public CartItemDTO updateCartItemDTO(String id, CartItemDTO cartItemDTO) {
         Integer cartIdInt = Integer.valueOf(id);
         CartItemEntity cartItemEntity = cartItemJpaRepository.findById(cartIdInt)
                 .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다"));
 
-        BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "id");
-
+       BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "id");
+//        cartItemEntity =CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
         CartItemEntity updatedCartItem = cartItemJpaRepository.save(cartItemEntity);
-
         CartItemDTO updatedCartItemDTO = new CartItemDTO();
-        BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO);
 
-        //총가격 수정하는 코드 만들기 TotalPrice 변경된 수량과 아이템을 기준으로 총가격 출력하도록 코드수정하기
+      BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO);
+//        updatedCartItemDTO = CartMapper.INSTANCE.cartItemEntitytoCartItemDTO(updatedCartItem);// updatedCartItemDTO.setCartItemsId(cartIdInt);
         return updatedCartItemDTO;
     }
 }

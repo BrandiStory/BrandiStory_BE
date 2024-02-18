@@ -35,14 +35,6 @@ public class CartController implements ApiController {
         return cartService.getCartItems();
     }
 
-//    //요청문은 /carts/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
-//    @Operation(summary = "장바구니 수량 수정")
-//    @PutMapping("/carts/update/{productId}")
-//    public ResponseEntity<String> updateCart(@RequestParam String productId, @RequestParam Integer newQuantity) {
-//        cartService.updateCart(productId, newQuantity);
-//        return ResponseEntity.ok("장바구니 수량이 수정되었습니다.");
-//    }
-
 
     @PutMapping("/carts/{id}")
     public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String id, @RequestBody CartItemDTO cartItemDTO) {
@@ -51,3 +43,15 @@ public class CartController implements ApiController {
     }
 
 }
+
+
+
+
+//    //요청문은 /carts/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
+//    @Operation(summary = "장바구니 수량 수정")
+//    @PutMapping("/carts/update/{productId}")
+//    public ResponseEntity<String> updateCart(@RequestParam String productId, @RequestParam Integer newQuantity) {
+//        cartService.updateCart(productId, newQuantity);
+//        return ResponseEntity.ok("장바구니 수량이 수정되었습니다.");
+//    }
+

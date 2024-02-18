@@ -32,3 +32,4 @@ public class ProductDTO {
         @Schema(description = "이미지리스트", example = "이미지리스트")
         private List<ImageDTO> imageList;
 }
+
