@@ -16,6 +16,10 @@ import java.util.Optional;
 
 @Repository
 public interface ProductJpaRepository extends JpaRepository<ProductEntity, Integer> {
+
+    @Query("SELECT p FROM ProductEntity p LEFT JOIN FETCH p.imageList WHERE p.productId = :productId")
+    Optional<ProductEntity> findByIdWithImages(@Param("productId") Integer productId);
+
     @Query("SELECT p FROM ProductEntity p LEFT JOIN FETCH p.imageList")
     List<ProductEntity> findAllWithImages();
 

@@ -16,13 +16,20 @@ import java.util.List;
 public class ProductDTO {
         @Schema(description = "제품ID", example = "1")
         private Integer productId;
+
         @Schema(description = "제품명", example = "버튼가디건")
         private String productName;
+
         @Schema(description = "가격", example = "20000")
         private Integer price;
+
         @Schema(description = "수량", example = "49")
         private Integer quantity;
+
         @Schema(description = "회사이름", example = "블링")
         private String companyName;
-        private List<ImageDTO> imageDTOList;
-    }
+
+        @Schema(description = "이미지리스트", example = "이미지리스트")
+        private List<ImageDTO> imageList;
+}
+

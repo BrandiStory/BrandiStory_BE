@@ -1,5 +1,6 @@
 package com.supercoding.brandiStory.service;
 
+import com.supercoding.brandiStory.repository.entity.ImageEntity;
 import com.supercoding.brandiStory.repository.entity.ProductEntity;
 import com.supercoding.brandiStory.repository.products.ProductJpaRepository;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import static com.supercoding.brandiStory.service.ProductSpecification.hasSequen
 @RequiredArgsConstructor
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 public class ProductService {
     private final ProductJpaRepository productJpaRepository;
 
@@ -73,6 +76,16 @@ public class ProductService {
         return filteredPage;
     }
 
+    public ProductDTO getProductDetail(int productId) {
+        // image랑 join해서 가져오는 코드
+        Optional<ProductEntity> productEntity = productJpaRepository.findByIdWithImages(productId);
+        if (productEntity.isEmpty()) throw new NotFoundException("상품을 찾을 수 없습니다.");
+        System.out.println("productEntity.get() = " + productEntity.get().getImageList());
+        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity.get());
+        //상세 정보 들고 오기
+//        ProductEntity productEntity2 = productJpaRepository.findById(productId)
+//                .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
+//        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity2);
+    }
 }
 
-//제품상세페이지:>findByIdWithImages(@Param("productId") Long productId):
