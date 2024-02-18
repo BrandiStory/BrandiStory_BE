@@ -1,8 +1,9 @@
 package com.supercoding.brandiStory.config.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.supercoding.brandiStory.service.exceptions.ErrorMessage;
+import com.supercoding.brandiStory.service.exceptions.JwtTokenException;
+import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
+import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -78,6 +79,35 @@ public class JwtTokenProvider {
         return validateToken(jwtToken, accessSecretKey);
     }
 
+    public boolean expireAccessToken(String accessToken) throws JwtTokenException{
+        try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(accessSecretKey)
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+
+            log.info("before token expire time: {}", claims.getExpiration());
+
+            claims.setExpiration(new Date());
+
+            log.info("after token expire time: {}", claims.getExpiration());
+
+            return true;
+        } catch (MalformedJwtException e) {
+            throw new JwtTokenException(ErrorMessage.WRONG_TYPE_TOKEN.getErrMsg());
+        } catch (ExpiredJwtException e) {
+            throw new JwtTokenException(ErrorMessage.EXPIRED_TOKEN.getErrMsg());
+        } catch (UnsupportedJwtException e) {
+            throw new JwtTokenException(ErrorMessage.UNSUPPORTED_TOKEN.getErrMsg());
+        } catch (SignatureException e) {
+            throw new JwtTokenException(ErrorMessage.SIGNATURE_FAIL_TOKEN.getErrMsg());
+        } catch (Exception e) {
+            log.error("e.getClass() : {}", e.getClass());
+            log.error("expireAccessToken error: {}", e.getMessage());
+            throw new JwtTokenException(e.getMessage());
+        }
+    }
+
     public boolean validateRefreshToken(String jwtToken) {
         return validateToken(jwtToken, refreshSecretKey);
     }
@@ -93,8 +123,18 @@ public class JwtTokenProvider {
 
             return claims.getExpiration()
                     .after(now);
-        } catch (Exception e) {
-            return false;
+        } catch (SignatureException e) {
+            log.info("SignatureException");
+            throw new JwtException(ErrorMessage.WRONG_TYPE_TOKEN.getErrMsg());
+        } catch (MalformedJwtException e) {
+            log.info("MalformedJwtException");
+            throw new JwtException(ErrorMessage.UNSUPPORTED_TOKEN.getErrMsg());
+        } catch (ExpiredJwtException e) {
+            log.info("ExpiredJwtException");
+            throw new JwtException(ErrorMessage.EXPIRED_TOKEN.getErrMsg());
+        } catch (IllegalArgumentException e) {
+            log.info("IllegalArgumentException");
+            throw new JwtException(ErrorMessage.UNKNOWN_ERROR.getErrMsg());
         }
     }
 

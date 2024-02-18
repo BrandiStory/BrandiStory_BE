@@ -2,16 +2,13 @@ package com.supercoding.brandiStory.web.filters;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supercoding.brandiStory.config.security.JwtTokenProvider;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import com.supercoding.brandiStory.service.exceptions.ErrorMessage;
+import io.jsonwebtoken.*;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.api.ErrorMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -37,20 +34,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
 
             filterChain.doFilter(request, response);
-        } catch (MalformedJwtException e) {
-            setResponse(response, 401, "손상된 토큰입니다");
-        } catch (ExpiredJwtException e) {
-            setResponse(response, 401,"만료된 토큰입니다");
-        } catch (UnsupportedJwtException e) {
-            setResponse(response, 401,"지원하지 않는 토큰입니다");
-        } catch (SignatureException e) {
-            setResponse(response, 401,"시그니처 검증에 실패한 토큰입니다");
+        } catch (JwtException ex) {
+            String message = ex.getMessage();
+            if(ErrorMessage.UNKNOWN_ERROR.getErrMsg().equals(message)) {
+                setResponse(response, ErrorMessage.UNKNOWN_ERROR);
+            }
+            //잘못된 타입의 토큰인 경우
+            else if(ErrorMessage.WRONG_TYPE_TOKEN.getErrMsg().equals(message)) {
+                setResponse(response, ErrorMessage.WRONG_TYPE_TOKEN);
+            }
+            //토큰 만료된 경우
+            else if(ErrorMessage.EXPIRED_TOKEN.getErrMsg().equals(message)) {
+                setResponse(response, ErrorMessage.EXPIRED_TOKEN);
+            }
+            //지원되지 않는 토큰인 경우
+            else if(ErrorMessage.UNSUPPORTED_TOKEN.getErrMsg().equals(message)) {
+                setResponse(response, ErrorMessage.UNSUPPORTED_TOKEN);
+            }
+            else {
+                setResponse(response, ErrorMessage.UNKNOWN_ERROR);
+            }
         }
     }
 
-    private void setResponse(HttpServletResponse response, Integer errorCode, String msg) throws RuntimeException, IOException {
+    private void setResponse(HttpServletResponse response, ErrorMessage errorMessage) throws RuntimeException, IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(errorCode);
-        response.getWriter().print(msg);
+        response.setStatus(401);
+        response.getWriter().print(errorMessage.getErrMsg());
     }
 }

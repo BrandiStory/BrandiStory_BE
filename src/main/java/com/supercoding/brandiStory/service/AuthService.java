@@ -1,14 +1,16 @@
 package com.supercoding.brandiStory.service;
 
 import com.supercoding.brandiStory.config.security.JwtTokenProvider;
-import com.supercoding.brandiStory.repository.users.UserEntity;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.repository.users.UserJpaRepository;
-import com.supercoding.brandiStory.repository.users.enums.RoleType;
-import com.supercoding.brandiStory.repository.users.enums.SexType;
+import com.supercoding.brandiStory.repository.entity.enums.RoleType;
+import com.supercoding.brandiStory.repository.entity.enums.SexType;
+import com.supercoding.brandiStory.service.exceptions.JwtTokenException;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -83,6 +85,19 @@ public class AuthService {
             return jwtTokenProvider.createAccessToken(email, roles);
         } catch (Exception e) {
             throw new NotAcceptException("로그인 할 수 없습니다.");
+        }
+    }
+
+    public void logout(HttpServletRequest httpServletRequest) throws JwtTokenException{
+        try {
+            String accessToken = jwtTokenProvider.resolveToken(httpServletRequest);
+            log.info("accessToken: {}", accessToken);
+            jwtTokenProvider.expireAccessToken(accessToken);
+
+        } catch (Exception e) {
+            String eMessage = e.getMessage();
+            log.error("logout error: {}", eMessage);
+            throw new JwtTokenException(eMessage);
         }
     }
 }
