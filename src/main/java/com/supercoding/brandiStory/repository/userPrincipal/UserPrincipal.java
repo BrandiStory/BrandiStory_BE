@@ -1,6 +1,6 @@
 package com.supercoding.brandiStory.repository.userPrincipal;
 
-import com.supercoding.brandiStory.repository.users.UserEntity;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

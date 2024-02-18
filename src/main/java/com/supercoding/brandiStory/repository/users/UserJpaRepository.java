@@ -1,5 +1,6 @@
 package com.supercoding.brandiStory.repository.users;
 
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

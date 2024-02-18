@@ -1,10 +1,9 @@
 package com.supercoding.brandiStory.service.security;
 
 import com.supercoding.brandiStory.repository.userDetails.CustomUserDetails;
-import com.supercoding.brandiStory.repository.userPrincipal.UserPrincipal;
-import com.supercoding.brandiStory.repository.users.UserEntity;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.repository.users.UserJpaRepository;
-import com.supercoding.brandiStory.repository.users.enums.RoleType;
+import com.supercoding.brandiStory.repository.entity.enums.RoleType;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
