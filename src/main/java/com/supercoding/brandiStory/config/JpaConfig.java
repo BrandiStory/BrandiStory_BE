@@ -14,15 +14,10 @@ import java.util.HashMap;
 @Configuration
 @EnableJpaRepositories(
         basePackages = {
-<<<<<<< Updated upstream
             "com.supercoding.brandiStory.repository.carts", "com.supercoding.brandiStory.repository.entity",
             "com.supercoding.brandiStory.repository.products", "com.supercoding.brandiStory.repository.roles",
             "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userPrincipal",
             "com.supercoding.brandiStory.repository.users"
-=======
-            "com.supercoding.brandiStory.repository.items", "com.supercoding.brandiStory.repository.users",
-            "com.supercoding.brandiStory.repository.carts"
->>>>>>> Stashed changes
         },
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager"
@@ -34,15 +29,10 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(dataSource);
         em.setPackagesToScan(
-<<<<<<< Updated upstream
             "com.supercoding.brandiStory.repository.carts", "com.supercoding.brandiStory.repository.entity",
             "com.supercoding.brandiStory.repository.products", "com.supercoding.brandiStory.repository.roles",
             "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userPrincipal",
             "com.supercoding.brandiStory.repository.users"
-=======
-                "com.supercoding.brandiStory.repository.items", "com.supercoding.brandiStory.repository.users",
-                "com.supercoding.brandiStory.repository.carts"
->>>>>>> Stashed changes
         );
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
