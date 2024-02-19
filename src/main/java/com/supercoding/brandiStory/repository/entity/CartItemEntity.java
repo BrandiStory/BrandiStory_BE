@@ -22,13 +22,9 @@ public class CartItemEntity {
     @Column(name= "cart_items_id")
     private Integer cartItemsId;
 
-//    //OneToOne? or ManyToOne?
-//    @ManyToOne(fetch=FetchType.LAZY)
-//    @JoinColumn(name="users_id")
-//    private UserEntity userEntity;
-//
-    @Column(name = "users_id")
-    private Integer usersId;
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="users_id")
+    private UserEntity user;
 
     @Column(name = "product_id")
     private Integer productId;
