@@ -5,11 +5,20 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/brandi_story?useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: brandi123
+datasource:
+  driver-class-name: org.mariadb.jdbc.Driver
+  url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/brandi_story?useUnicode=true&characterEncoding=UTF-8
+  username: root
+  password: brandi123
+
+jwt:
+  source:
+    access-secret-key: "SECRET_KEY"
+    refresh-secret-key: "REFRESH_SECRET_KEY"
+
+  valid-time:
+    access-token: 3600000  # 1시간 (60 * 60 * 1000L)
+    refresh-token: 86400000 # 1일 (24 * 60 * 60 * 1000L)
 
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
