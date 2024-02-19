@@ -2,9 +2,11 @@ package com.supercoding.brandiStory.service.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
+@NoArgsConstructor
 @AllArgsConstructor
-@Getter
 public enum ErrorMessage {
     WRONG_TYPE_TOKEN("손상된 토큰입니다"),
     EXPIRED_TOKEN("만료된 토큰입니다"),
@@ -12,5 +14,9 @@ public enum ErrorMessage {
     SIGNATURE_FAIL_TOKEN("시그니처 검증에 실패한 토큰입니다"),
     UNKNOWN_ERROR("기타 에러");
 
-    private final String errMsg;
+    private String errMsg;
+
+    public String getErrMsg() {
+        return this.errMsg;
+    }
 }
