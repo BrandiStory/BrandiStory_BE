@@ -3,6 +3,7 @@ package com.supercoding.brandiStory.service;
 import com.supercoding.brandiStory.repository.carts.CartItemJpaRepository;
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.repository.entity.ProductEntity;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.repository.products.ProductJpaRepository;
 import com.supercoding.brandiStory.service.exceptions.InvalidValueException;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
@@ -49,10 +50,17 @@ public class CartService {
                 .collect(Collectors.toList());
     }
 
- //카트id하나당 제품id 하나씩 들어가있는데 리스트가 들어가게끔 해보기
-    //productId를 가져오면 productPrice를 같이 가져오도록 코드짜보기 2/15
-    public CartItemDTO updateCartItemDTO(String id, CartItemBody cartItemBody) {
-        Integer cartIdInt = Integer.valueOf(id);
+    public List<CartItemDTO> getCartItemsByUsersId(Integer usersId) {
+        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findByUserEntityUsersId(usersId);
+        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
+
+        return cartItemEntities.stream()
+                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
+                .collect(Collectors.toList());
+    }
+
+     public CartItemDTO updateCartItemDTO(String cartId, CartItemBody cartItemBody) {
+        Integer cartIdInt = Integer.valueOf(cartId);
         CartItemEntity cartItemEntity = cartItemJpaRepository.findById(cartIdInt)
                 .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다"));
 

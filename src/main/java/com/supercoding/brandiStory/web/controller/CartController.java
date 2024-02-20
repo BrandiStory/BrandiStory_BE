@@ -1,6 +1,7 @@
 package com.supercoding.brandiStory.web.controller;
 
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,18 +30,25 @@ public class CartController implements ApiController {
         return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
     }
 
-    //로그인 후에는 그 유저의 장바구니만 조회되니까 유저별 장바구니 조회는 필요없겠지?
-    //장바구니 id별로 불러오기 구현???? 장바구니에 한 아이템 말고 두가지 이상 담기도 추가?
+
     @Operation(summary = "장바구니 조회하기")
     @GetMapping("/carts")
     public List<CartItemDTO> getCartItems(){
         return cartService.getCartItems();
     }
 
+    @Operation(summary = "유저별 장바구니 조회하기")
+    @PostMapping("/carts")
+    public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
+        Integer usersId = requestBody.get("usersId");
+        return cartService.getCartItemsByUsersId(usersId);
+    }
 
-    @PutMapping("/carts/{id}")
-    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String id, @RequestBody CartItemBody cartItemBody) {
-        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(id, cartItemBody);
+
+    @Operation(summary = "장바구니 수정하기")
+    @PutMapping("/carts/{cartId}")
+    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String cartId, @RequestBody CartItemBody cartItemBody) {
+        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(cartId, cartItemBody);
         return ResponseEntity.ok(updatedCartItemDTO);
     }
 

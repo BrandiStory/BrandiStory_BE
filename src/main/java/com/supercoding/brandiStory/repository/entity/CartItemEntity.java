@@ -40,6 +40,9 @@ public class CartItemEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
+    //아래코드를 쓰면 CART UPDATE 호출했을 때 Total Price가 업데이트 되긴 하는데
+    //만약 잘못된 가격 정보가 들어갔을 때 DB에서 올바른 가격 정보를 가져오지 않고, 잘못된 가격 그대로 계산이 됨.
+    // 그래서 Mapping으로 다시 짜줌!
 //    @Transient
 //    public Integer getTotalPrice() {
 //        if (price != null && quantity != null) {

@@ -34,7 +34,7 @@ public class SecurityConfig {
                         "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
                         "/webjars/**", "/swagger-ui.html", "/api/login", "/api/signup", "/api/posts/**",
                             "/api/products/**", "/api/products-page","/api/add-to-cart", "/api/carts/**",
-                            "api/products-with-images")
+                            "api/products-with-images", "api/carts/**")
                     .permitAll().anyRequest().authenticated()
                 );
         return http.build();

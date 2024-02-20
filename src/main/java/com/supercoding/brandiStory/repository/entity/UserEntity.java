@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-    @Id @Column @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @Column(name="users_id") @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer usersId;
     @Column(nullable = false, unique = true)
     private String email;
