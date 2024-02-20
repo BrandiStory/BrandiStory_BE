@@ -10,6 +10,8 @@ import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -111,5 +113,13 @@ public class AuthService {
             UserEntity userEntity = userOptional.get();
             userJpaRepository.delete(userEntity);
         }
+    }
+
+    public void searchToken(String token) {
+        jwtTokenProvider.validateAccessToken(token);
+    }
+
+    public String printTokenInfo(String token) {
+        return jwtTokenProvider.getAccessTokenInfo(token);
     }
 }

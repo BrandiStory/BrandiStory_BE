@@ -18,7 +18,7 @@ public class SignUp {
     private String username;
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,20}$", message = "비밀번호는 영문자와 숫자의 조합으로 8자 이상 20자 이하여야 합니다.")
     private String password;
-    @NotBlank
+    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "올바른 휴대전화 형식으로 수정해 주세요. ex>010-1234-1234 ")
     private String phone;
     @NotBlank
     private String address;
