@@ -37,7 +37,7 @@ public class CartController implements ApiController {
         return cartService.getCartItems();
     }
 
-    @Operation(summary = "유저별 장바구니 조회하기")
+    @Operation(summary = "유저별 장바구니 조회하기 | json요청문:{usersId:7}")
     @PostMapping("/carts")
     public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
         Integer usersId = requestBody.get("usersId");
