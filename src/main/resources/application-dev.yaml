@@ -22,7 +22,3 @@ jwt:
   source:
     access-secret-key: ${JWT_ACCESS_SECRET_KEY}
     refresh-secret-key: ${JWT_REFRESH_SECRET_KEY}
-
-  valid-time:
-    access-token: 3600000  # 1시간 (60 * 60 * 1000L)
-    refresh-token: 86400000 # 1일 (24 * 60 * 60 * 1000L)
