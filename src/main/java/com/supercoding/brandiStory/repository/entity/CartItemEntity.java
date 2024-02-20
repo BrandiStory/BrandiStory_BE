@@ -40,18 +40,18 @@ public class CartItemEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    @Transient
-    public Integer getTotalPrice() {
-        if (price != null && quantity != null) {
-            return price * quantity;
-        }
-        return null;
-    }
-
-    @PrePersist
-    @PreUpdate
-    private void updateTotalPrice() {
-        this.totalPrice = getTotalPrice();
-    }
+//    @Transient
+//    public Integer getTotalPrice() {
+//        if (price != null && quantity != null) {
+//            return price * quantity;
+//        }
+//        return null;
+//    }
+//
+//    @PrePersist
+//    @PreUpdate
+//    private void updateTotalPrice() {
+//        this.totalPrice = getTotalPrice();
+//    }
 }
 

@@ -38,8 +38,8 @@ public class CartController implements ApiController {
 
 
     @PutMapping("/carts/{id}")
-    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String id, @RequestBody CartItemDTO cartItemDTO) {
-        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(id, cartItemDTO);
+    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String id, @RequestBody CartItemBody cartItemBody) {
+        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(id, cartItemBody);
         return ResponseEntity.ok(updatedCartItemDTO);
     }
 

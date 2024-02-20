@@ -29,11 +29,6 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartItemJpaRepository cartItemJpaRepository;
     private final ProductJpaRepository productJpaRepository;
-    private List<CartItemDTO> cartItemList;
-
-//    public CartService() {
-//    this.cartItemList = new ArrayList<>();
-//    }
     public Integer addToCart(CartItemBody cartItemBody) {
         CartItemEntity cartItemEntity = CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(null, cartItemBody);
         CartItemEntity cartItemEntityCreated;
@@ -56,18 +51,19 @@ public class CartService {
 
  //카트id하나당 제품id 하나씩 들어가있는데 리스트가 들어가게끔 해보기
     //productId를 가져오면 productPrice를 같이 가져오도록 코드짜보기 2/15
-    public CartItemDTO updateCartItemDTO(String id, CartItemDTO cartItemDTO) {
+    public CartItemDTO updateCartItemDTO(String id, CartItemBody cartItemBody) {
         Integer cartIdInt = Integer.valueOf(id);
         CartItemEntity cartItemEntity = cartItemJpaRepository.findById(cartIdInt)
                 .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다"));
 
-       BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "id");
-//        cartItemEntity =CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
+       //BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "cartItemsId");
+        cartItemEntity =CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(cartIdInt, cartItemBody);
+        cartItemEntity.setCartItemsId(cartIdInt);
         CartItemEntity updatedCartItem = cartItemJpaRepository.save(cartItemEntity);
         CartItemDTO updatedCartItemDTO = new CartItemDTO();
+        // BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO); BeanUtils대신 Mapper사용
+   updatedCartItemDTO = CartMapper.INSTANCE.cartItemEntitytoCartItemDTO(updatedCartItem);
 
-      BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO);
-//        updatedCartItemDTO = CartMapper.INSTANCE.cartItemEntitytoCartItemDTO(updatedCartItem);// updatedCartItemDTO.setCartItemsId(cartIdInt);
         return updatedCartItemDTO;
     }
 }
