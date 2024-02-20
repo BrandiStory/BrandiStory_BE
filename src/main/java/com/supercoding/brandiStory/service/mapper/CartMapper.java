@@ -17,9 +17,13 @@ public interface CartMapper {
 
   // @Mapping(target = "cartItemsId", ignore = true)
 //    CartItemEntity cartItemDTOToCartItemEntity(CartItemDTO cartItemDTO);
+    @Mapping(target="userEntity.usersId", source = "cartItemBody.usersId")
+    @Mapping(target="productEntity.productId", source = "cartItemBody.productId")
     CartItemEntity idAndCartItemBodyToCartItemEntity(Integer id, CartItemBody cartItemBody);
 
     //@Mapping(target = "cartItemsId", ignore = true)
+    @Mapping(target="usersId", source = "userEntity.usersId")
+    @Mapping(target="productId", source = "productEntity.productId")
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
 
 }

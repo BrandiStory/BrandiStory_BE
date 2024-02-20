@@ -10,6 +10,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 //@EqualsAndHashCode(of = "id")
 @Entity
 @Table(name="products")
@@ -31,9 +32,8 @@ public class ProductEntity {
     @Column(name = "company_name", length =255)
     private String companyName;
 
-//    @ManyToOne(fetch=FetchType.LAZY)
-//    @JoinColumn(name="product_id")
-//    private CartItemEntity cartItemEntity;
+    @OneToOne(mappedBy = "productEntity")
+    private CartItemEntity cartItemEntity;
 
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     private List<ImageEntity> imageList;

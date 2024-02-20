@@ -30,4 +30,7 @@ public class UserEntity {
     private SexType gender;
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "userEntity")
+    private CartItemEntity cartItemEntity;
 }
