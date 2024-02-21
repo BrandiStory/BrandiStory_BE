@@ -25,7 +25,26 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductJpaRepository productJpaRepository;
 
+    //전체제품 조회 - 페이지네이션 적용, 수량 0 제외, 이미지 포함, 완성본
+    public Page<ProductDTO> findAllWithPageableWithImages(Pageable pageable) {
+        Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
+        List<ProductEntity> filteredEntities = productEntities.getContent()
+                .stream()
+                .filter(entity -> entity.getQuantity() > 0)
+                .collect(Collectors.toList());
+        Page<ProductDTO> filteredPage = new PageImpl<>(filteredEntities)
+                .map(ProductMapper.INSTANCE::productEntityToProductDTO);
+        return filteredPage;
+    }
 
+    public ProductDTO getProductDetail(int productId) {
+        // image랑 join해서 가져오는 코드
+        Optional<ProductEntity> productEntity = productJpaRepository.findByIdWithImages(productId);
+        if (productEntity.isEmpty()) throw new NotFoundException("상품을 찾을 수 없습니다.");
+        System.out.println("productEntity.get() = " + productEntity.get().getImageList());
+        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity.get());
+    }
+}
 //    public List<ProductDTO> getAllProducts() {
 //        List<ProductEntity> productEntities = productJpaRepository.findAll();
 //        if (productEntities.isEmpty()) throw new NotFoundException("등록된 상품이 없습니다.");
@@ -60,28 +79,10 @@ public class ProductService {
 //        return filteredPage;
 //    }
 
-    //전체제품 조회 - 페이지네이션 적용, 수량 0 제외, 이미지 포함, 완성본
-        public Page<ProductDTO> findAllWithPageableWithImages(Pageable pageable) {
-            Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
-            List<ProductEntity> filteredEntities = productEntities.getContent()
-                    .stream()
-                    .filter(entity -> entity.getQuantity() > 0)
-                    .collect(Collectors.toList());
-            Page<ProductDTO> filteredPage = new PageImpl<>(filteredEntities)
-                    .map(ProductMapper.INSTANCE::productEntityToProductDTO);
-            return filteredPage;
-        }
 
-    public ProductDTO getProductDetail(int productId) {
-        // image랑 join해서 가져오는 코드
-        Optional<ProductEntity> productEntity = productJpaRepository.findByIdWithImages(productId);
-        if (productEntity.isEmpty()) throw new NotFoundException("상품을 찾을 수 없습니다.");
-        System.out.println("productEntity.get() = " + productEntity.get().getImageList());
-        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity.get());
         //상세 정보 들고 오기
 //        ProductEntity productEntity2 = productJpaRepository.findById(productId)
 //                .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
 //        return ProductMapper.INSTANCE.productEntityToProductDTO(productEntity2);
-    }
-}
+
 

@@ -18,7 +18,17 @@ import java.util.List;
 public class ProductController implements ApiController {
 
     private final ProductService productService;
+    @Operation(summary = "상품 상세 조회")
+    @GetMapping("/products/{productId}")
+    public ProductDTO getProductDetail(@PathVariable int productId) {
+        return productService.getProductDetail(productId);
+    }
 
+    @Operation(summary = "Page형식 조회페이지 - 이미지 포함")
+    @GetMapping("/products-page")
+    public Page<ProductDTO> findAllProductsPaginationWithImages(Pageable pageable){
+        return productService.findAllWithPageableWithImages(pageable);
+    }
 
 //    @Operation(summary = "전체 상품 페이지 - 이미지 불포함")
 //    @GetMapping("/products")
@@ -40,17 +50,5 @@ public class ProductController implements ApiController {
 //        return productService.findAllWithPageable(pageable);
 //    }
 
-
-    @Operation(summary = "상품 상세 조회")
-    @GetMapping("/products/{productId}")
-    public ProductDTO getProductDetail(@PathVariable int productId) {
-        return productService.getProductDetail(productId);
-    }
-
-    @Operation(summary = "Page형식 조회페이지 - 이미지 포함")
-    @GetMapping("/products-page")
-    public Page<ProductDTO> findAllProductsPaginationWithImages(Pageable pageable){
-        return productService.findAllWithPageableWithImages(pageable);
-    }
 
 }
