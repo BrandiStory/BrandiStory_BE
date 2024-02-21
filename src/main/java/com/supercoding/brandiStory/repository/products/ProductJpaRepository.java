@@ -24,7 +24,6 @@ public interface ProductJpaRepository extends JpaRepository<ProductEntity, Integ
     @Query("SELECT p FROM ProductEntity p LEFT JOIN FETCH p.imageList")
     List<ProductEntity> findAllWithImages();
 
-    Page<ProductEntity> findAll(Specification<ImageEntity> imageEntitySpecification, Pageable pageable);
 
     //   Page<ProductEntity> findAllPagesWithImages(Pageable pageable);
 

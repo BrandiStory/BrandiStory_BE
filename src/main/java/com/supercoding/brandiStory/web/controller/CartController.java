@@ -1,7 +1,5 @@
 package com.supercoding.brandiStory.web.controller;
 
-import com.supercoding.brandiStory.repository.entity.CartItemEntity;
-import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
