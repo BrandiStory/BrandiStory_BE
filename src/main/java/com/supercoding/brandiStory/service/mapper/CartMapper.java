@@ -18,6 +18,7 @@ public interface CartMapper {
     @Mapping(target="productEntity.price", source = "cartItemBody.price")
     @Mapping(target="userEntity.usersId", source = "cartItemBody.usersId")
     @Mapping(target="productEntity.productId", source = "cartItemBody.productId")
+    @Mapping(target = "totalPrice", expression = "java(calculateTotalPriceEntity(cartItemBody))")
     CartItemEntity idAndCartItemBodyToCartItemEntity(Integer id, CartItemBody cartItemBody);
 
     @Mapping(target="price", source = "productEntity.price")
@@ -28,5 +29,9 @@ public interface CartMapper {
 
     default Integer calculateTotalPrice(CartItemEntity cartItemEntity) {
         return cartItemEntity.getProductEntity().getPrice() * cartItemEntity.getQuantity();
+    }
+
+    default Integer calculateTotalPriceEntity(CartItemBody cartItemBody) {
+        return cartItemBody.getPrice() * cartItemBody.getQuantity();
     }
 }

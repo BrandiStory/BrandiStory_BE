@@ -32,6 +32,9 @@ public class CartService {
     private final ProductJpaRepository productJpaRepository;
     public Integer addToCart(CartItemBody cartItemBody) {
         CartItemEntity cartItemEntity = CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(null, cartItemBody);
+        ProductEntity productEntity = productJpaRepository.findById(cartItemBody.getProductId())
+                .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
+        cartItemEntity.setPrice(productEntity.getPrice());
         CartItemEntity cartItemEntityCreated;
         try {
             cartItemEntityCreated = cartItemJpaRepository.save(cartItemEntity);
@@ -41,14 +44,19 @@ public class CartService {
         return cartItemEntityCreated.getCartItemsId();
     }
 
-//    public List<CartItemDTO> getCartItems() {
-//        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
-//        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
-//
-//        return cartItemEntities.stream()
-//                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
-//                .collect(Collectors.toList());
-//    }
+//장바구니 DB에 UserId별로 여러 ProductId가 들어가있다. Product1이 user1, user2, user3에 들어가 있을 수 있으니까.
+// Cart 관련 코드를 실행하는데는 문제가 없는데 이상하게 Product 조회 페이지에서 오류가 난다.
+    //rg.hibernate.HibernateException: More than one row with the given identifier was found: 8, for class: com.supercoding.brandiStory.repository.entity.CartItemEntity
+   //위처럼 오류뜸. ㅡㅡ; 그래서 장바구니에서 중복된 ProductId정보를 삭제하면 Product조회 페이지가 실행 된다.
+
+    public List<CartItemDTO> getCartItems() {
+        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
+        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
+
+        return cartItemEntities.stream()
+                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
+                .collect(Collectors.toList());
+    }
 
     public List<CartItemDTO> getCartItemsByUsersId(Integer usersId) {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findByUserEntityUsersId(usersId);

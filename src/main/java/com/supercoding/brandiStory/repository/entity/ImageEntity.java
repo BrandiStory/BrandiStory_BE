@@ -25,7 +25,7 @@ public class ImageEntity {
 
     // integer을 변경 해야할 수 있음
     @Column(name = "image")
-    private Integer image;
+    private String image;
 
     @Column(name = "sequence")
     private Integer sequence;
