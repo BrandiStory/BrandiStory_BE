@@ -33,6 +33,7 @@ public class CartService {
         ProductEntity productEntity = productJpaRepository.findById(cartItemBody.getProductId())
                 .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
         cartItemEntity.setPrice(productEntity.getPrice());
+        cartItemEntity.setTotalPrice(productEntity.getPrice()*cartItemBody.getQuantity());
         CartItemEntity cartItemEntityCreated;
         try {
             cartItemEntityCreated = cartItemJpaRepository.save(cartItemEntity);

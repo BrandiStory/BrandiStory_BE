@@ -20,26 +20,13 @@ public class CartItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartItemsId;
 
+     @ManyToOne(fetch=FetchType.LAZY)
+     @JoinColumn(name="users_id")
+     private UserEntity userEntity;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="users_id")
-    private UserEntity userEntity;
-//    @Column(name = "users_id")
-//    private Integer usersId;
-
-//     @ManyToOne(fetch=FetchType.LAZY)
-//     @JoinColumn(name="users_id")
-//     private UserEntity user;
-
-//    @Column(name = "product_id")
-//    private Integer productId;
-
-    @OneToOne(fetch=FetchType.LAZY)
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="product_id")
     private ProductEntity productEntity;
-
-
-
 
     @Column(name = "price")
     private Integer price;

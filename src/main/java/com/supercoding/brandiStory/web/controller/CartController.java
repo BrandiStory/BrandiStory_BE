@@ -22,16 +22,12 @@ import java.util.Map;
 public class CartController implements ApiController {
     private final CartService cartService;
 
-   //이거 프로덕트 컨트롤러에 넣을지, 장바구니 컨트롤러에 넣을지 정하기
-    //json형식으로 post보내면 되겠지. {productId랑 quantity, }
-
     @Operation(summary = "장바구니에 상품 추가")
     @PostMapping("/products/add-to-cart")
     public ResponseEntity<String> addToCart(@RequestBody CartItemBody cartItemBody){
         cartService.addToCart(cartItemBody);
         return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
     }
-
 
     @Operation(summary = "장바구니 조회하기")
     @GetMapping("/carts")

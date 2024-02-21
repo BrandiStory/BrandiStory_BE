@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
 //        UserPrincipal userPrincipal = u
 
         CustomUserDetails customUserDetails = CustomUserDetails.builder()
-                .userId(userEntity.getId())
+                .userId(userEntity.getUsersId())
                 .password(userEntity.getPassword())
                 .email(userEntity.getEmail())
                 .authorities(Arrays.stream(RoleType.values()).map(Enum::name).collect(Collectors.toList()))

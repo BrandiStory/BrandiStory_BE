@@ -32,8 +32,9 @@ public class ProductEntity {
     @Column(name = "company_name", length =255)
     private String companyName;
 
-    @OneToOne(mappedBy = "productEntity")
-    private CartItemEntity cartItemEntity;
+    @OneToMany(mappedBy = "productEntity")
+    private List<CartItemEntity> cartItems;
+
 
     @OneToMany(mappedBy = "productEntity", fetch = FetchType.LAZY)
     private List<ImageEntity> imageList;

@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,6 +41,6 @@ public class UserEntity {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @OneToOne(mappedBy = "userEntity")
-    private CartItemEntity cartItemEntity;
+    @OneToMany(mappedBy = "userEntity")
+    private List<CartItemEntity> cartItemEntity;
 }
