@@ -1,11 +1,13 @@
 package com.supercoding.brandiStory.web.controller;
-
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.web.dto.CartItemBody;
+import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
+import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ public class CartController implements ApiController {
 
    //이거 프로덕트 컨트롤러에 넣을지, 장바구니 컨트롤러에 넣을지 정하기
     //json형식으로 post보내면 되겠지. {productId랑 quantity, }
+
     @Operation(summary = "장바구니에 상품 추가")
     @PostMapping("/products/add-to-cart")
     public ResponseEntity<String> addToCart(@RequestBody CartItemBody cartItemBody){
@@ -54,7 +57,6 @@ public class CartController implements ApiController {
         return ResponseEntity.ok(finalPrice);
     }
 
-
     @Operation(summary = "장바구니 수정하기")
     @PutMapping("/carts/{cartId}")
     public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String cartId, @RequestBody CartItemBody cartItemBody) {
@@ -63,9 +65,6 @@ public class CartController implements ApiController {
     }
 
 }
-
-
-
 
 //    //요청문은 /carts/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
 //    @Operation(summary = "장바구니 수량 수정")

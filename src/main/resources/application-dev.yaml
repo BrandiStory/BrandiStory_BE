@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: dev
 server:
-  port: 8080
+  port: 8085
 
 logging:
   config: classpath:logback-spring-dev.xml
@@ -11,3 +11,14 @@ logging:
     org:
       hibernate:
         SQL: DEBUG
+
+datasource:
+  username: ${DATABASE_USERNAME}
+  password: ${DATABASE_PASSWORD}
+  driver-class-name: org.mariadb.jdbc.Driver
+  url: jdbc:mariadb://brandi-story.c1oigou8k06a.ap-northeast-2.rds.amazonaws.com:3306/brandi_story?useUnicode=true&characterEncoding=UTF-8
+
+jwt:
+  source:
+    access-secret-key: ${JWT_ACCESS_SECRET_KEY}
+    refresh-secret-key: ${JWT_REFRESH_SECRET_KEY}

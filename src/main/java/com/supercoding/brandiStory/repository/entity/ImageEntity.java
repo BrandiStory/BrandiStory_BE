@@ -23,7 +23,6 @@ public class ImageEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity productEntity;
 
-    // integer을 변경 해야할 수 있음
     @Column(name = "image")
     private String image;
 
@@ -33,5 +32,4 @@ public class ImageEntity {
 //    public Optional<ProductEntity> getProductEntity() {
 //        return Optional.ofNullable(productEntity);
 //    }
-
 }

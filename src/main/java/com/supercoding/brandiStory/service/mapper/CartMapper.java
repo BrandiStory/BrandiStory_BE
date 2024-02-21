@@ -15,6 +15,7 @@ import java.util.List;
 public interface CartMapper {
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
+
     @Mapping(target="productEntity.price", source = "cartItemBody.price")
     @Mapping(target="userEntity.usersId", source = "cartItemBody.usersId")
     @Mapping(target="productEntity.productId", source = "cartItemBody.productId")
@@ -25,6 +26,7 @@ public interface CartMapper {
     @Mapping(target="usersId", source = "userEntity.usersId")
     @Mapping(target="productId", source = "productEntity.productId")
     @Mapping(target = "totalPrice", expression = "java(calculateTotalPrice(cartItemEntity))")
+
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
 
     default Integer calculateTotalPrice(CartItemEntity cartItemEntity) {
