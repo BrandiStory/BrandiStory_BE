@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,17 @@ public class CartController implements ApiController {
     public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
         Integer usersId = requestBody.get("usersId");
         return cartService.getCartItemsByUsersId(usersId);
+    }
+
+    //userId로 조회한 값으로 나온 장바구니 리스트들을 BODY에 JSON값으로 넣어주면 총가격 출력됨.
+    @Operation(summary="장바구니에 담긴 상품 가격 총 합계")
+    @PostMapping("/carts/total-price")
+    public ResponseEntity<String> calculateTotalPrice(@RequestBody List<CartItemDTO> cartItems) {
+        Integer sumTotalPrice = cartService.calculateTotalPrice(cartItems);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(sumTotalPrice);
+        String finalPrice = "장바구니 총합계 = " + formattedPrice+ "원";
+        return ResponseEntity.ok(finalPrice);
     }
 
 

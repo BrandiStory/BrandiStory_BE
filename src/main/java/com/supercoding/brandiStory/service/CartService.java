@@ -53,10 +53,15 @@ public class CartService {
     public List<CartItemDTO> getCartItemsByUsersId(Integer usersId) {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findByUserEntityUsersId(usersId);
         if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
-
         return cartItemEntities.stream()
                 .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Integer calculateTotalPrice(List<CartItemDTO> cartItems) {
+        return cartItems.stream()
+                .mapToInt(CartItemDTO::getTotalPrice)
+                .sum();
     }
 
      public CartItemDTO updateCartItemDTO(String cartId, CartItemBody cartItemBody) {
