@@ -4,10 +4,10 @@ import com.supercoding.brandiStory.repository.carts.CartItemJpaRepository;
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.repository.entity.ProductEntity;
 import com.supercoding.brandiStory.repository.products.ProductJpaRepository;
-import com.supercoding.brandiStory.service.exceptions.InvalidValueException;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.service.mapper.CartMapper;
+import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -28,13 +28,11 @@ import java.util.stream.Collectors;
 public class CartService {
     private final CartItemJpaRepository cartItemJpaRepository;
     private final ProductJpaRepository productJpaRepository;
-//    private List<CartItemDTO> cartItemList;
-
-    //    public CartService() {
-//        this.cartItemList = new ArrayList<>();
-//    }
-    public Integer addToCart(CartItemDTO cartItemDTO) {
-        CartItemEntity cartItemEntity = CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
+    public Integer addToCart(CartItemBody cartItemBody) {
+        CartItemEntity cartItemEntity = CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(null, cartItemBody);
+        ProductEntity productEntity = productJpaRepository.findById(cartItemBody.getProductId())
+                .orElseThrow(() -> new NotFoundException("상품을 찾을 수 없습니다."));
+        cartItemEntity.setPrice(productEntity.getPrice());
         CartItemEntity cartItemEntityCreated;
         try {
             cartItemEntityCreated = cartItemJpaRepository.save(cartItemEntity);
@@ -44,6 +42,10 @@ public class CartService {
         return cartItemEntityCreated.getCartItemsId();
     }
 
+//장바구니 DB에 UserId별로 여러 ProductId가 들어가있다. Product1이 user1, user2, user3에 들어가 있을 수 있으니까.
+// Cart 관련 코드를 실행하는데는 문제가 없는데 이상하게 Product 조회 페이지에서 오류가 난다.
+    //rg.hibernate.HibernateException: More than one row with the given identifier was found: 8, for class: com.supercoding.brandiStory.repository.entity.CartItemEntity
+   //위처럼 오류뜸. ㅡㅡ; 그래서 장바구니에서 중복된 ProductId정보를 삭제하면 Product조회 페이지가 실행 된다.
 
     public List<CartItemDTO> getCartItems() {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
@@ -54,20 +56,33 @@ public class CartService {
                 .collect(Collectors.toList());
     }
 
- //카트id하나당 제품id 하나씩 들어가있는데 리스트가 들어가게끔 해보기
-    //productId를 가져오면 productPrice를 같이 가져오도록 코드짜보기 2/15
-    public CartItemDTO updateCartItemDTO(String id, CartItemDTO cartItemDTO) {
-        Integer cartIdInt = Integer.valueOf(id);
+    public List<CartItemDTO> getCartItemsByUsersId(Integer usersId) {
+        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findByUserEntityUsersId(usersId);
+        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
+        return cartItemEntities.stream()
+                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
+                .collect(Collectors.toList());
+    }
+
+    public Integer calculateTotalPrice(List<CartItemDTO> cartItems) {
+        return cartItems.stream()
+                .mapToInt(CartItemDTO::getTotalPrice)
+                .sum();
+    }
+
+     public CartItemDTO updateCartItemDTO(String cartId, CartItemBody cartItemBody) {
+        Integer cartIdInt = Integer.valueOf(cartId);
         CartItemEntity cartItemEntity = cartItemJpaRepository.findById(cartIdInt)
                 .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다"));
 
-       BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "id");
-//        cartItemEntity =CartMapper.INSTANCE.cartItemDTOToCartItemEntity(cartItemDTO);
+       //BeanUtils.copyProperties(cartItemDTO, cartItemEntity, "cartItemsId");
+        cartItemEntity =CartMapper.INSTANCE.idAndCartItemBodyToCartItemEntity(cartIdInt, cartItemBody);
+        cartItemEntity.setCartItemsId(cartIdInt);
         CartItemEntity updatedCartItem = cartItemJpaRepository.save(cartItemEntity);
         CartItemDTO updatedCartItemDTO = new CartItemDTO();
+        // BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO); BeanUtils대신 Mapper사용
+   updatedCartItemDTO = CartMapper.INSTANCE.cartItemEntitytoCartItemDTO(updatedCartItem);
 
-      BeanUtils.copyProperties(updatedCartItem, updatedCartItemDTO);
-//        updatedCartItemDTO = CartMapper.INSTANCE.cartItemEntitytoCartItemDTO(updatedCartItem);// updatedCartItemDTO.setCartItemsId(cartIdInt);
         return updatedCartItemDTO;
     }
 }

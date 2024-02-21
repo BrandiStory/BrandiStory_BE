@@ -2,6 +2,7 @@ package com.supercoding.brandiStory.service.mapper;
 
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.repository.entity.ProductEntity;
+import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
 import com.supercoding.brandiStory.web.dto.ProductDTO;
 import org.mapstruct.Mapper;
@@ -14,10 +15,25 @@ import java.util.List;
 public interface CartMapper {
     CartMapper INSTANCE = Mappers.getMapper(CartMapper.class);
 
-   // @Mapping(target = "cartItemsId", ignore = true)
-    CartItemEntity cartItemDTOToCartItemEntity(CartItemDTO cartItemDTO);
 
-    //@Mapping(target = "cartItemsId", ignore = true)
+    @Mapping(target="productEntity.price", source = "cartItemBody.price")
+    @Mapping(target="userEntity.usersId", source = "cartItemBody.usersId")
+    @Mapping(target="productEntity.productId", source = "cartItemBody.productId")
+    @Mapping(target = "totalPrice", expression = "java(calculateTotalPriceEntity(cartItemBody))")
+    CartItemEntity idAndCartItemBodyToCartItemEntity(Integer id, CartItemBody cartItemBody);
+
+    @Mapping(target="price", source = "productEntity.price")
+    @Mapping(target="usersId", source = "userEntity.usersId")
+    @Mapping(target="productId", source = "productEntity.productId")
+    @Mapping(target = "totalPrice", expression = "java(calculateTotalPrice(cartItemEntity))")
+
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
 
+    default Integer calculateTotalPrice(CartItemEntity cartItemEntity) {
+        return cartItemEntity.getProductEntity().getPrice() * cartItemEntity.getQuantity();
+    }
+
+    default Integer calculateTotalPriceEntity(CartItemBody cartItemBody) {
+        return cartItemBody.getPrice() * cartItemBody.getQuantity();
+    }
 }

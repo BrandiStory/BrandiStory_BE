@@ -15,9 +15,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "users")
 public class UserEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "users_id")
-    private Integer id;
+// <<<<<<< product1
+    @Id @Column(name="users_id") @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer usersId;
+// ==================
+//     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     @Column(name = "users_id")
+//     private Integer id;
+// >>>>>>> development
     @Column(nullable = false, unique = true)
     private String email;
     @Column(length = 20)
@@ -34,4 +39,7 @@ public class UserEntity {
     @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToOne(mappedBy = "userEntity")
+    private CartItemEntity cartItemEntity;
 }
