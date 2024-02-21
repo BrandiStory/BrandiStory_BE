@@ -41,14 +41,14 @@ public class CartService {
         return cartItemEntityCreated.getCartItemsId();
     }
 
-    public List<CartItemDTO> getCartItems() {
-        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
-        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
-
-        return cartItemEntities.stream()
-                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<CartItemDTO> getCartItems() {
+//        List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findAll();
+//        if (cartItemEntities.isEmpty()) throw new NotFoundException("장바구니가 비어있습니다.");
+//
+//        return cartItemEntities.stream()
+//                .map(CartMapper.INSTANCE::cartItemEntitytoCartItemDTO)
+//                .collect(Collectors.toList());
+//    }
 
     public List<CartItemDTO> getCartItemsByUsersId(Integer usersId) {
         List<CartItemEntity> cartItemEntities = cartItemJpaRepository.findByUserEntityUsersId(usersId);

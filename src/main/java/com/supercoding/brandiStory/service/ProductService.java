@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.supercoding.brandiStory.service.ProductSpecification.hasSequence;
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -66,7 +64,6 @@ public class ProductService {
     //sequence가 1인 이미지만 출력하는 거는 또 생각해봐야함!
     public Page<ProductDTO> findAllWithPageableWithImages(Pageable pageable) {
         Page<ProductEntity> productEntities = productJpaRepository.findAll(pageable);
-    //    Page<ProductEntity> productEntities = productJpaRepository.findAll(ProductSpecification.hasSequence(1),pageable);
         List<ProductEntity> filteredEntities = productEntities.getContent()
                 .stream()
                 .filter(entity -> entity.getQuantity() > 0)

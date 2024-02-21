@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "cartItemsId")
+//@EqualsAndHashCode(of = "cartItemsId")
 @Builder
 @Entity
 @Table(name="cart_items")

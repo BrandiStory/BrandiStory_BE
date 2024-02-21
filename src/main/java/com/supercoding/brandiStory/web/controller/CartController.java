@@ -31,12 +31,12 @@ public class CartController implements ApiController {
         return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
     }
 
-
-    @Operation(summary = "장바구니 조회하기")
-    @GetMapping("/carts")
-    public List<CartItemDTO> getCartItems(){
-        return cartService.getCartItems();
-    }
+//
+//    @Operation(summary = "장바구니 조회하기")
+//    @GetMapping("/carts")
+//    public List<CartItemDTO> getCartItems(){
+//        return cartService.getCartItems();
+//    }
 
     @Operation(summary = "유저별 장바구니 조회하기 | json요청문:{usersId:7}")
     @PostMapping("/carts")

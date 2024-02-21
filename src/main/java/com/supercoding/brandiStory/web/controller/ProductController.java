@@ -48,11 +48,11 @@ public class ProductController implements ApiController {
 //    }
 
 
-    @Operation(summary = "상품 상세 조회")
-    @GetMapping("/products/{productId}")
-    public ProductDTO getProductDetail(@PathVariable int productId) {
-        return productService.getProductDetail(productId);
-    }
+//    @Operation(summary = "상품 상세 조회")
+//    @GetMapping("/products/{productId}")
+//    public ProductDTO getProductDetail(@PathVariable int productId) {
+//        return productService.getProductDetail(productId);
+//    }
 
     @Operation(summary = "Page형식 조회페이지 - 이미지 포함")
     @GetMapping("/products-page")
