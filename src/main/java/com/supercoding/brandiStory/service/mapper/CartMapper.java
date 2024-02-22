@@ -26,7 +26,6 @@ public interface CartMapper {
     @Mapping(target="usersId", source = "userEntity.usersId")
     @Mapping(target="productId", source = "productEntity.productId")
     @Mapping(target = "totalPrice", expression = "java(calculateTotalPrice(cartItemEntity))")
-
     CartItemDTO cartItemEntitytoCartItemDTO(CartItemEntity cartItemEntity);
 
     default Integer calculateTotalPrice(CartItemEntity cartItemEntity) {

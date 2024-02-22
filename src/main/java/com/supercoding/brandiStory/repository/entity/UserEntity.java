@@ -19,7 +19,7 @@ import java.util.Collection;
 public class UserEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "users_id")
-    private Integer id;
+    private Integer usersId;
     @Column(nullable = false, unique = true)
     private String email;
     @Column(length = 20)

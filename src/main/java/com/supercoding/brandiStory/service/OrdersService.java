@@ -4,7 +4,7 @@ import com.supercoding.brandiStory.repository.carts.CartItemJpaRepository;
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.repository.entity.OrdersEntity;
 import com.supercoding.brandiStory.repository.entity.UserEntity;
-import com.supercoding.brandiStory.repository.orders.OrdersJpaRepository;
+import com.supercoding.brandiStory.repository.entity.orders.OrdersJpaRepository;
 import com.supercoding.brandiStory.repository.users.UserJpaRepository;
 import com.supercoding.brandiStory.service.mapper.OrdersMapper;
 import com.supercoding.brandiStory.web.dto.OrderListReqDto;

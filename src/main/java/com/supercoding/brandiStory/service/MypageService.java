@@ -9,9 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
@@ -20,14 +17,14 @@ public class MypageService {
     private final UserJpaRepository userJpaRepository;
 
     public UserDTO getUserInfo(UserDTO userDTO) {
-        UserEntity mypageEntity = userJpaRepository.findById(userDTO.getUserId())
+        UserEntity mypageEntity = userJpaRepository.findById(userDTO.getUsersId())
                 .orElseThrow(() -> new NotFoundException("마이페이지를 불러올 수 없습니다."));
         return convertToDto(mypageEntity);
     }
 
     private UserDTO convertToDto(UserEntity userEntity) {
         UserDTO userDTO = new UserDTO();
-        userDTO.setUserId(userEntity.getId());
+        userDTO.setUsersId(userEntity.getUsersId());
         userDTO.setEmail(userEntity.getEmail());
         userDTO.setPassword(userEntity.getPassword());
         userDTO.setName(userEntity.getUsername());

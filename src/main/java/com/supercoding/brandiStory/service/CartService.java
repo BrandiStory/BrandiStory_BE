@@ -9,16 +9,11 @@ import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.service.mapper.CartMapper;
 import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 

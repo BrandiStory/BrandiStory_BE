@@ -17,7 +17,7 @@ import java.util.HashMap;
             "com.supercoding.brandiStory.repository.carts", "com.supercoding.brandiStory.repository.entity",
             "com.supercoding.brandiStory.repository.products", "com.supercoding.brandiStory.repository.roles",
             "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userRole",
-            "com.supercoding.brandiStory.repository.users"
+            "com.supercoding.brandiStory.repository.users", "com.supercoding.brandiStory.repository.orders"
         },
         entityManagerFactoryRef = "entityManagerFactory",
         transactionManagerRef = "transactionManager"
@@ -32,7 +32,7 @@ public class JpaConfig {
             "com.supercoding.brandiStory.repository.carts", "com.supercoding.brandiStory.repository.entity",
             "com.supercoding.brandiStory.repository.products", "com.supercoding.brandiStory.repository.roles",
             "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userPrincipal",
-            "com.supercoding.brandiStory.repository.users"
+            "com.supercoding.brandiStory.repository.users", "com.supercoding.brandiStory.repository.orders"
         );
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();

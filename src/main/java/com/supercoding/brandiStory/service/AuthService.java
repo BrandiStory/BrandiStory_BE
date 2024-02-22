@@ -149,7 +149,7 @@ public class AuthService {
     public Integer getUserId(String email) {
         UserEntity userEntity = userJpaRepository.findByEmail(email)
                 .orElseThrow(() -> new NotFoundException("email로 해당 user를 찾을 수 없습니다."));
-        Integer userId = userEntity.getId();
+        Integer userId = userEntity.getUsersId();
         return userId;
     }
 }

@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui/**",
                                 "/webjars/**", "/swagger-ui.html", "/api/login", "/api/signup", "/api/posts/**",
                                 "/resources/static/**",   "/api/products/**", "/api/products-page","/api/add-to-cart", "/api/carts/**",
-                            "api/products-with-images")
+                            "/api/products-with-images", "/api/orders/**", "api/mypage")
                         .permitAll().anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling

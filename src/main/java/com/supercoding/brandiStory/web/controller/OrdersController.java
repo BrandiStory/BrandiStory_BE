@@ -13,8 +13,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import java.util.Map;
 @RestController
 @Slf4j
-@RequestMapping("/orders")
-public class OrdersController {
+public class OrdersController implements ApiController {
 
     private final OrdersService ordersService;
 
@@ -22,8 +21,8 @@ public class OrdersController {
     public OrdersController(OrdersService ordersService) {
         this.ordersService = ordersService;
     }
-    @Operation(summary = "주문 조회")
-    @PostMapping
+    @Operation(summary = "주문하기")
+    @PostMapping("/orders")
     public ResponseEntity<?> createOrder(@RequestBody OrderListReqDto orderDTO) {
         try {
             OrdersEntity newOrder = ordersService.createOrder(orderDTO);
@@ -32,8 +31,8 @@ public class OrdersController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    @Operation(summary = "주문 하기")
-    @GetMapping("/{id}")
+    @Operation(summary = "주문조회")
+    @GetMapping("/orders/{id}")
     public ResponseEntity<?> getOrderById(@PathVariable Integer id) {
         try {
             OrdersEntity order = ordersService.getOrderById(id);

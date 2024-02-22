@@ -5,7 +5,6 @@ import com.supercoding.brandiStory.repository.entity.role.UserRoles;
 import com.supercoding.brandiStory.repository.userDetails.CustomUserDetails;
 import com.supercoding.brandiStory.repository.entity.UserEntity;
 import com.supercoding.brandiStory.repository.users.UserJpaRepository;
-import com.supercoding.brandiStory.repository.entity.enums.RoleType;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @Primary
