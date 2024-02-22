@@ -183,4 +183,21 @@ public class JwtTokenProvider {
         }
         return tokenInfo;
     }
+
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(accessSecretKey)
+                .parseClaimsJws(token)
+                .getBody();
+
+        // 클레임 객체에 있는 모든 정보를 출력합니다.
+        String emailInfo = "";
+        for (String key : claims.keySet()) {
+            if (key.equals("sub")){
+                emailInfo = String.valueOf(claims.get(key));
+                break;
+            }
+        }
+        return emailInfo;
+    }
 }
