@@ -52,4 +52,11 @@ public class SignController {
         String tokenInfo = authService.printTokenInfo(token);
         return tokenInfo;
     }
+
+    @GetMapping(value = "/user/id")
+    public Integer getUserId(@RequestHeader("Token") String token) {
+        String email = authService.getEmail(token);
+        Integer userId = authService.getUserId(email);
+        return userId;
+    }
 }
