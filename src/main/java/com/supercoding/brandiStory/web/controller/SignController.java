@@ -4,6 +4,8 @@ import com.supercoding.brandiStory.service.AuthService;
 import com.supercoding.brandiStory.web.dto.Login;
 import com.supercoding.brandiStory.web.dto.SignUp;
 import com.supercoding.brandiStory.web.dto.UserEmail;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -43,5 +45,18 @@ public class SignController {
     public String unregister(@RequestBody UserEmail userEmail) {
         authService.deleteUser(userEmail.getEmail());
         return "회원 탈퇴 성공하였습니다.";
+    }
+
+    @GetMapping(value = "/show-token")
+    public String showToken(@RequestHeader("X-AUTH-TOKEN") String token) {
+        String tokenInfo = authService.printTokenInfo(token);
+        return tokenInfo;
+    }
+
+    @GetMapping(value = "/user/id")
+    public Integer getUserId(@RequestHeader("X-AUTH-TOKEN") String token) {
+        String email = authService.getEmail(token);
+        Integer userId = authService.getUserId(email);
+        return userId;
     }
 }

@@ -1,11 +1,13 @@
 package com.supercoding.brandiStory.repository.entity;
 
 import com.supercoding.brandiStory.repository.entity.enums.SexType;
+import com.supercoding.brandiStory.repository.entity.role.UserRoles;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Getter
 @Setter
@@ -34,4 +36,7 @@ public class UserEntity {
     @CreationTimestamp // INSERT 시 자동으로 값을 채워줌
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "userEntity")
+    private Collection<UserRoles> userRoles;
 }

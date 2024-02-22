@@ -2,9 +2,12 @@ package com.supercoding.brandiStory.service;
 
 import com.supercoding.brandiStory.config.security.JwtTokenProvider;
 import com.supercoding.brandiStory.repository.entity.UserEntity;
-import com.supercoding.brandiStory.repository.users.UserJpaRepository;
-import com.supercoding.brandiStory.repository.entity.enums.RoleType;
 import com.supercoding.brandiStory.repository.entity.enums.SexType;
+import com.supercoding.brandiStory.repository.entity.role.Roles;
+import com.supercoding.brandiStory.repository.entity.role.UserRoles;
+import com.supercoding.brandiStory.repository.userRole.RolesRepository;
+import com.supercoding.brandiStory.repository.userRole.UserRolesRepository;
+import com.supercoding.brandiStory.repository.users.UserJpaRepository;
 import com.supercoding.brandiStory.service.exceptions.JwtTokenException;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
@@ -21,7 +24,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,6 +37,8 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final RolesRepository rolesRepository;
+    private final UserRolesRepository userRolesRepository;
 
     @Transactional
     public boolean signUp( SignUp signUpRequest) {
@@ -47,9 +51,12 @@ public class AuthService {
         String username = signUpRequest.getUsername();
 //        MultipartFile profile = signUpRequest.getProfile();
 
+        // 아이디 동일 여부 체크
         if (userJpaRepository.existsByEmail(email)) {
             return false;
         }
+
+        // email 동일 여부 체크후, 통과시 유저 생성
         UserEntity userEntity = userJpaRepository.findByEmail(email)
                 .orElseGet(() -> userJpaRepository.save(
                         UserEntity.builder()
@@ -61,6 +68,17 @@ public class AuthService {
                                 .gender(SexType.valueOf(gender))
                                 .build()
                 ));
+
+        // 기본 ROLE_USER 저장
+        Roles roles = rolesRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new NotFoundException("ROLE_USER를 찾을 수가 없습니다."));
+
+        userRolesRepository.save(
+            UserRoles.builder()
+                    .userEntity(userEntity)
+                    .roles(roles)
+                    .build()
+        );
         return true;
     }
 
@@ -78,10 +96,11 @@ public class AuthService {
             UserEntity userEntity = userJpaRepository.findByEmail(email)
                     .orElseThrow(() -> new NotFoundException("email로 user를 찾을 수 없습니다."));
 
-            List<String> roles = Arrays.stream(RoleType.values())
-                                        .map(Enum::name)
-                                        .collect(Collectors.toList());
-
+            List<String> roles = userEntity.getUserRoles()
+                    .stream()
+                    .map(UserRoles::getRoles)
+                    .map(Roles::getName)
+                    .collect(Collectors.toList());
 //            log.info("login roles : {}", roles);
 
             return jwtTokenProvider.createAccessToken(email, roles);
@@ -107,9 +126,30 @@ public class AuthService {
     @Transactional
     public void deleteUser(String email) {
         Optional<UserEntity> userOptional = userJpaRepository.findByEmail(email);
-        if(userOptional.isPresent()){
+        if (userOptional.isPresent()) {
             UserEntity userEntity = userOptional.get();
             userJpaRepository.delete(userEntity);
+        } else {
+            throw new NotFoundException("해당 email(" + email + ")은 존재하지 않습니다.");
         }
+    }
+
+    public void searchToken(String token) {
+        jwtTokenProvider.validateAccessToken(token);
+    }
+
+    public String printTokenInfo(String token) {
+        return jwtTokenProvider.getAccessTokenInfo(token);
+    }
+
+    public String getEmail(String token) {
+        return jwtTokenProvider.getEmailFromToken(token);
+    }
+
+    public Integer getUserId(String email) {
+        UserEntity userEntity = userJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("email로 해당 user를 찾을 수 없습니다."));
+        Integer userId = userEntity.getId();
+        return userId;
     }
 }

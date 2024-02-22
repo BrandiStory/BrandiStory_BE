@@ -8,16 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class CartItemDTO {
-    @Schema(description = "장바구니ID", example = "5")
-    private Integer cartItemsId;
+public class CartItemBody {
     @Schema(description = "유저ID", example = "1")
     private Integer usersId;
     @Schema(description = "제품ID", example = "3")
@@ -26,8 +22,4 @@ public class CartItemDTO {
     private Integer price;
     @Schema(description = "수량", example = "4")
     private Integer quantity;
-    @Schema(description = "총합계", example = "가격*수량=총합계")
-    private Integer totalPrice;
-
-
 }

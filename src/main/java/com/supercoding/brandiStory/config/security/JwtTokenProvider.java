@@ -17,6 +17,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +36,8 @@ public class JwtTokenProvider {
     private String accessSecretKeySource;
     @Value("${jwt.source.refresh-secret-key}")
     private String refreshSecretKeySource;
-    @Value("${jwt.valid-time.access-token}")
-    private long accessTokenValidMillisecond;
-    @Value("${jwt.valid-time.refresh-token}")
-    private long refreshTokenValidMillisecond;
+    private long accessTokenValidMillisecond = Duration.ofMinutes(30).toMillis();
+    private long refreshTokenValidMillisecond = Duration.ofDays(7).toMillis();;
 
     private final UserDetailsService userDetailsService;
 
@@ -157,5 +160,44 @@ public class JwtTokenProvider {
 
     public void setRefreshTokenValidMillisecond(String refreshTokenValidMillisecond) {
         this.refreshTokenValidMillisecond = Long.parseLong(refreshTokenValidMillisecond);
+    }
+
+    public String getAccessTokenInfo(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(accessSecretKey)
+                .parseClaimsJws(token)
+                .getBody();
+
+        // 클레임 객체에 있는 모든 정보를 출력합니다.
+        String tokenInfo = "토큰에 포함된 정보: ";
+        for (String key : claims.keySet()) {
+            if (key.equals("iat") || key.equals("exp")){
+                // Unix 시간을 LocalDateTime으로 변환
+                long unixTime = Long.parseLong(String.valueOf(claims.get(key)));
+                LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(unixTime), ZoneId.systemDefault());
+                tokenInfo += (key + ": " + dateTime + " | ");
+                continue;
+            }
+
+            tokenInfo += (key + ": " + claims.get(key) + " | ");
+        }
+        return tokenInfo;
+    }
+
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(accessSecretKey)
+                .parseClaimsJws(token)
+                .getBody();
+
+        // 클레임 객체에 있는 모든 정보를 출력합니다.
+        String emailInfo = "";
+        for (String key : claims.keySet()) {
+            if (key.equals("sub")){
+                emailInfo = String.valueOf(claims.get(key));
+                break;
+            }
+        }
+        return emailInfo;
     }
 }

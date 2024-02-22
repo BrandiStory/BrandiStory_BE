@@ -1,7 +1,6 @@
 package com.supercoding.brandiStory.web.controller;
-
-import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.service.CartService;
+import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
 import com.supercoding.brandiStory.service.exceptions.NotFoundException;
 import com.supercoding.brandiStory.web.dto.CartItemDTO;
@@ -12,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -21,37 +22,45 @@ import java.util.List;
 public class CartController implements ApiController {
     private final CartService cartService;
 
-   //이거 프로덕트 컨트롤러에 넣을지, 장바구니 컨트롤러에 넣을지 정하기
-    //json형식으로 post보내면 되겠지. {productId랑 quantity, }
-//    @Operation(summary = "장바구니에 상품 추가")
-//    @PostMapping("/products/add-to-cart")
-//    public ResponseEntity<String> addToCart(@RequestBody CartItemDTO cartItemDTO){
-//        cartService.addToCart(cartItemDTO);
-//        return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
-//    }
+    @Operation(summary = "장바구니에 상품 추가")
+    @PostMapping("/products/add-to-cart")
+    public ResponseEntity<String> addToCart(@RequestBody CartItemBody cartItemBody){
+        cartService.addToCart(cartItemBody);
+        return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
+    }
 
-
-
-
-    //로그인 후에는 그 유저의 장바구니만 조회되니까 유저별 장바구니 조회는 필요없겠지?
-    //장바구니 id별로 불러오기 구현???? 장바구니에 한 아이템 말고 두가지 이상 담기도 추가?
     @Operation(summary = "장바구니 조회하기")
     @GetMapping("/carts")
     public List<CartItemDTO> getCartItems(){
         return cartService.getCartItems();
     }
 
+    @Operation(summary = "유저별 장바구니 조회하기 | json요청문:{usersId:7}")
+    @PostMapping("/carts")
+    public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
+        Integer usersId = requestBody.get("usersId");
+        return cartService.getCartItemsByUsersId(usersId);
+    }
 
-    @PutMapping("/carts/{id}")
-    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String id, @RequestBody CartItemDTO cartItemDTO) {
-        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(id, cartItemDTO);
+    //userId로 조회한 값으로 나온 장바구니 리스트들을 BODY에 JSON값으로 넣어주면 총가격 출력됨.
+    @Operation(summary="장바구니에 담긴 상품 가격 총 합계")
+    @PostMapping("/carts/total-price")
+    public ResponseEntity<String> calculateTotalPrice(@RequestBody List<CartItemDTO> cartItems) {
+        Integer sumTotalPrice = cartService.calculateTotalPrice(cartItems);
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        String formattedPrice = formatter.format(sumTotalPrice);
+        String finalPrice = "장바구니 총합계 = " + formattedPrice+ "원";
+        return ResponseEntity.ok(finalPrice);
+    }
+
+    @Operation(summary = "장바구니 수정하기")
+    @PutMapping("/carts/{cartId}")
+    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String cartId, @RequestBody CartItemBody cartItemBody) {
+        CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(cartId, cartItemBody);
         return ResponseEntity.ok(updatedCartItemDTO);
     }
 
 }
-
-
-
 
 //    //요청문은 /carts/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
 //    @Operation(summary = "장바구니 수량 수정")
