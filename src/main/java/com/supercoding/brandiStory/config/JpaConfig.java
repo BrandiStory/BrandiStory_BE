@@ -16,7 +16,7 @@ import java.util.HashMap;
         basePackages = {
             "com.supercoding.brandiStory.repository.carts", "com.supercoding.brandiStory.repository.entity",
             "com.supercoding.brandiStory.repository.products", "com.supercoding.brandiStory.repository.roles",
-            "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userPrincipal",
+            "com.supercoding.brandiStory.repository.userDetails", "com.supercoding.brandiStory.repository.userRole",
             "com.supercoding.brandiStory.repository.users"
         },
         entityManagerFactoryRef = "entityManagerFactory",

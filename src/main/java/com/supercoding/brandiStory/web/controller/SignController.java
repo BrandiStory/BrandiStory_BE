@@ -48,13 +48,13 @@ public class SignController {
     }
 
     @GetMapping(value = "/show-token")
-    public String showToken(@RequestHeader("Token") String token) {
+    public String showToken(@RequestHeader("X-AUTH-TOKEN") String token) {
         String tokenInfo = authService.printTokenInfo(token);
         return tokenInfo;
     }
 
     @GetMapping(value = "/user/id")
-    public Integer getUserId(@RequestHeader("Token") String token) {
+    public Integer getUserId(@RequestHeader("X-AUTH-TOKEN") String token) {
         String email = authService.getEmail(token);
         Integer userId = authService.getUserId(email);
         return userId;
