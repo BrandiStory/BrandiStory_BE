@@ -1,4 +1,7 @@
 package com.supercoding.brandiStory.web.controller;
+import com.supercoding.brandiStory.repository.entity.UserEntity;
+import com.supercoding.brandiStory.repository.users.UserJpaRepository;
+import com.supercoding.brandiStory.service.AuthService;
 import com.supercoding.brandiStory.service.CartService;
 import com.supercoding.brandiStory.web.dto.CartItemBody;
 import com.supercoding.brandiStory.service.exceptions.NotAcceptException;
@@ -21,24 +24,33 @@ import java.util.Map;
 @Slf4j
 public class CartController implements ApiController {
     private final CartService cartService;
+    private final AuthService authService;
+    private final UserJpaRepository userJpaRepository;
 
-    @Operation(summary = "장바구니에 상품 추가")
+    public Integer getUserId(String token) {
+        String email = authService.getEmail(token);
+        UserEntity userEntity = userJpaRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Email로 해당 유저를 찾을 수 없습니다."));
+        return userEntity.getUsersId();
+    }
+    @Operation(summary = "장바구니에 상품 추가, 유저로그인(토큰정보) 필요")
     @PostMapping("/products/add-to-cart")
-    public ResponseEntity<String> addToCart(@RequestBody CartItemBody cartItemBody){
+    public ResponseEntity<String> addToCart(@RequestHeader("X-AUTH-TOKEN") String token, @RequestBody CartItemBody cartItemBody){
+        cartItemBody.setUsersId(getUserId(token));
         cartService.addToCart(cartItemBody);
         return ResponseEntity.ok("상품이 장바구니에 추가되었습니다.");
     }
 
-    @Operation(summary = "장바구니 조회하기")
+    @Operation(summary = "장바구니 id 상관없이 전체 조회하기")
     @GetMapping("/carts")
     public List<CartItemDTO> getCartItems(){
         return cartService.getCartItems();
     }
 
-    @Operation(summary = "유저별 장바구니 조회하기 | json요청문:{usersId:7}")
-    @PostMapping("/carts")
-    public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
-        Integer usersId = requestBody.get("usersId");
+    @Operation(summary = "토큰 정보를 바탕으로 UserId별 장바구니 조회하기")
+    @GetMapping("/carts/detail")
+    public List<CartItemDTO> getCartItemsByUsersId(@RequestHeader("X-AUTH-TOKEN") String token){
+        Integer usersId = getUserId(token);
         return cartService.getCartItemsByUsersId(usersId);
     }
 
@@ -55,11 +67,11 @@ public class CartController implements ApiController {
 
     @Operation(summary = "장바구니 수정하기")
     @PutMapping("/carts/{cartId}")
-    public ResponseEntity<CartItemDTO> updateCartItem(@PathVariable String cartId, @RequestBody CartItemBody cartItemBody) {
+    public ResponseEntity<CartItemDTO> updateCartItem(@RequestHeader("X-AUTH-TOKEN") String token, @PathVariable String cartId, @RequestBody CartItemBody cartItemBody) {
+        cartItemBody.setUsersId(getUserId(token));
         CartItemDTO updatedCartItemDTO = cartService.updateCartItemDTO(cartId, cartItemBody);
         return ResponseEntity.ok(updatedCartItemDTO);
     }
-
 }
 
 //    //요청문은 /carts/update/{productId}?newQunatity=2 이렇게 될 예정 productId는 집어넣어야한다.
@@ -70,3 +82,10 @@ public class CartController implements ApiController {
 //        return ResponseEntity.ok("장바구니 수량이 수정되었습니다.");
 //    }
 
+//아래는 토큰정보로 불러오는건 아니고 내가 직접 바디를 넣어줘야함
+//    @Operation(summary = "유저별 장바구니 조회하기 | json요청문:{usersId:7}" )
+//    @PostMapping("/carts")
+//    public List<CartItemDTO> getCartItemsByUsersId(@RequestBody Map<String, Integer> requestBody){
+//        Integer usersId = requestBody.get("usersId");
+//        return cartService.getCartItemsByUsersId(usersId);
+//    }

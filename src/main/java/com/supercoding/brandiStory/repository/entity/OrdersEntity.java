@@ -23,7 +23,7 @@ public class OrdersEntity {
     @JoinColumn(name = "users_id", nullable = false)
     private UserEntity userEntity;
 
-    @Column(nullable = false)
+    @Column(name = "product_name", nullable = false)
     private String productName;
 
     @Column(name = "quantity")
@@ -32,18 +32,18 @@ public class OrdersEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    @Column(nullable = false)
+    @Column(name = "customer_name", nullable = false)
     private String customerName;
 
-    @Column(nullable = false)
+    @Column(name = "customer_phone", nullable = false)
     private String customerPhone;
 
-    @Column(nullable = false)
+    @Column(name = "customer_email")
     private String customerEmail;
 
-    @Column(nullable = false)
+    @Column(name = "delivery_address", nullable = false)
     private String deliveryAddress;
 
-    @Column(nullable = false)
+    @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
 }
