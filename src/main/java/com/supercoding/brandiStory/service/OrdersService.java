@@ -4,7 +4,7 @@ import com.supercoding.brandiStory.repository.carts.CartItemJpaRepository;
 import com.supercoding.brandiStory.repository.entity.CartItemEntity;
 import com.supercoding.brandiStory.repository.entity.OrdersEntity;
 import com.supercoding.brandiStory.repository.entity.UserEntity;
-import com.supercoding.brandiStory.repository.entity.orders.OrdersJpaRepository;
+import com.supercoding.brandiStory.repository.orders.OrdersJpaRepository;
 import com.supercoding.brandiStory.repository.users.UserJpaRepository;
 import com.supercoding.brandiStory.service.mapper.OrdersMapper;
 import com.supercoding.brandiStory.web.dto.OrderListReqDto;
@@ -35,19 +35,24 @@ public class OrdersService {
     }
 
     public OrdersEntity createOrder(OrderListReqDto orderDTO) {
-        CartItemEntity cartItem = cartItemRepository.findById(orderDTO.getCartItemsId())
+        System.out.println("orderDTO >>> " + orderDTO);
+        CartItemEntity cartItem = cartItemRepository.findById(orderDTO.getCart_items_id())
                 .orElseThrow(() -> new RuntimeException("장바구니 항목을 찾을 수 없습니다."));
-        UserEntity user = userRepository.findById(orderDTO.getUsersId())
+
+        UserEntity user = userRepository.findById(orderDTO.getUsers_id())
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
         OrdersEntity order = ordersMapper.orderDtoToEntity(orderDTO);
+
+        System.out.println("order >> "+order);
         order.setCartItemsId(cartItem);
         order.setUserEntity(user);
         if (order.getDeliveryAddress() == null || order.getDeliveryAddress().isEmpty()) {
             order.setDeliveryAddress(user.getAddress());
         }
         order.setOrderDate(LocalDateTime.now());
+        ordersRepository.save(order);
 
-        return ordersRepository.save(order);
+        return null;
     }
 
     public OrdersEntity getOrderById(Integer id) {
