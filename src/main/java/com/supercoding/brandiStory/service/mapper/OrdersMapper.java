@@ -19,8 +19,8 @@ public interface OrdersMapper {
     OrdersEntity orderDtoToEntity(OrderListReqDto orderDTO);
     @AfterMapping
     default void mapCartItemsId(@MappingTarget OrdersEntity order, OrderListReqDto orderDTO, @Context CartItemJpaRepository cartItemRepository) {
-        if (orderDTO.getCartItemsId() != null) {
-            order.setCartItemsId(cartItemRepository.findById(orderDTO.getCartItemsId()).orElse(null));
+        if (orderDTO.getCart_items_id() != null) {
+            order.setCartItemsId(cartItemRepository.findById(orderDTO.getCart_items_id()).orElse(null));
         }
     }
 }
